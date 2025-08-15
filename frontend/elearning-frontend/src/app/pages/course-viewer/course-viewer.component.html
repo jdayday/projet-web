@@ -1,0 +1,42 @@
+<div class="course-viewer-container" *ngIf="courseContent">
+  
+  <div class="sidebar">
+    <h3>{{ courseContent.title }}</h3>
+    <div *ngFor="let chapter of courseContent.chapters" class="chapter">
+      <h4>{{ chapter.title }}</h4>
+      <ul>
+        <li *ngFor="let lesson of chapter.lessons" (click)="selectLesson(lesson)" [class.selected]="lesson === selectedLesson">
+          {{ lesson.title }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div *ngIf="selectedLesson; else noLessonSelected">
+      <h2>{{ selectedLesson.title }}</h2>
+
+      <div class="video-container" *ngIf="safeVideoUrl">
+        <iframe 
+          [src]="safeVideoUrl" 
+          width="100%" 
+          height="100%" 
+          frameborder="0" 
+          allow="autoplay; fullscreen; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      
+      <a *ngIf="selectedLesson.resourceUrl" [href]="selectedLesson.resourceUrl" target="_blank" class="download-link">
+        Download Resources
+      </a>
+    </div>
+    <ng-template #noLessonSelected>
+      <div class="welcome-message">
+        <h2>Welcome!</h2>
+        <p>Select a lesson from the left to begin your learning journey.</p>
+      </div>
+    </ng-template>
+  </div>
+
+</div>

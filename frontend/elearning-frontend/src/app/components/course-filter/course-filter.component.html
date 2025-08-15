@@ -1,0 +1,19 @@
+<div class="division-filters">
+  <button *ngFor="let division of divisions" 
+          (click)="onSelectDivision(division)"
+          [class.active]="activeDivision === division">
+    {{ division.replace('_', ' ') }}
+  </button>
+</div>
+
+<div class="category-filters">
+  <button (click)="onFilterByCategory(null)" 
+          [class.active]="activeCategoryId === null">
+    All
+  </button>
+  <button *ngFor="let category of categories" 
+          (click)="onFilterByCategory(category.id)"
+          [class.active]="activeCategoryId === category.id">
+    {{ category.name }}
+  </button>
+</div>

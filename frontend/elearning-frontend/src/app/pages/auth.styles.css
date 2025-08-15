@@ -1,0 +1,38 @@
+/* This creates the full-page, 50/50 split layout */
+:host {
+  display: block;
+  background-color: #f0f8ff;
+}
+
+.auth-page-container, .role-select-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Creates two equal columns */
+  height: 100vh;                 /* Fills the entire screen height */
+  width: 100%;
+  
+}
+
+.image-panel {
+  background-color: #f0f8ff; /* A light blue background color */
+  background-image: url('/assets/images/mydrawing.svg');
+  
+  /* 'contain' ensures the whole image is visible without being cropped */
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form-panel, .selection-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* This will center the form in the right half */
+  padding: 2rem;
+  background-color: #f0f8ff;
+}
+
+/* We add a max-width to the form itself so it doesn't look too wide on large screens */
+form {
+  width: 100%;
+  max-width: 450px; 
+}

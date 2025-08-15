@@ -1,0 +1,15 @@
+<app-hero-section></app-hero-section>
+<app-promo-video></app-promo-video>
+
+<div class="course-showcase-section">
+  <div class="container">
+    <div class="filter-wrapper">
+      <h1>All the Courses you need in one place</h1>
+      <p>From school subjects to exam prep—discover courses made for your success</p>
+      
+      <app-course-filter (filtersChanged)="onFiltersChanged($event)"></app-course-filter>
+    </div>    
+    <app-top-courses [courses]="filteredCourses"></app-top-courses>
+  </div>
+</div>
+<app-testimonials></app-testimonials>

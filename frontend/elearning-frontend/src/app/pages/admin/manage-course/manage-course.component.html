@@ -1,0 +1,36 @@
+<div class="container" *ngIf="courseContent">
+  <h1>Managing: {{ courseContent.title }}</h1>
+
+  <div *ngFor="let chapter of courseContent.chapters" class="chapter-container">
+    <h3>Chapter {{chapter.order}}: {{ chapter.title }}</h3>
+    <ul>
+      <li *ngFor="let lesson of chapter.lessons">
+        Lesson {{lesson.order}}: {{ lesson.title }}
+      </li>
+    </ul>
+
+    <button (click)="showAddLessonFormForChapterId = chapter.id" class="btn-small">Add Lesson</button>
+
+    <form *ngIf="showAddLessonFormForChapterId === chapter.id" [formGroup]="lessonForm" (ngSubmit)="onLessonSubmit(chapter.id)" class="sub-form">
+      <h4>New Lesson for Chapter {{chapter.order}}</h4>
+      <input type="text" placeholder="Lesson Title" formControlName="title">
+      <input type="number" placeholder="Lesson Order" formControlName="order">
+      <input type="text" placeholder="Video URL" formControlName="videoUrl">
+      <button type="submit" [disabled]="!lessonForm.valid">Save Lesson</button>
+      <button type="button" (click)="showAddLessonFormForChapterId = null" class="btn-cancel">Cancel</button>
+    </form>
+  </div>
+
+  <hr>
+
+  <button *ngIf="!showAddChapterForm" (click)="showAddChapterForm = true">Add New Chapter</button>
+
+  <form *ngIf="showAddChapterForm" [formGroup]="chapterForm" (ngSubmit)="onChapterSubmit()" class="main-form">
+    <h2>New Chapter</h2>
+    <input type="text" placeholder="Chapter Title" formControlName="title">
+    <input type="number" placeholder="Chapter Order" formControlName="order">
+    <button type="submit" [disabled]="!chapterForm.valid">Save Chapter</button>
+    <button type="button" (click)="showAddChapterForm = false" class="btn-cancel">Cancel</button>
+  </form>
+
+</div>

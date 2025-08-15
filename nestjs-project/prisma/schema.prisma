@@ -1,0 +1,155 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+  PARENT 
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email String @unique
+  hash String
+  hashedRt String?
+  
+  firstName   String?
+  lastName    String?
+  phone       String?
+  dateOfBirth DateTime?
+  state       String?
+  division    String? 
+
+  testimonials Testimonial[]
+  
+  role Role @default(STUDENT)
+  enrollments Enrollment[]
+  @@map("users")
+}
+
+enum Division {
+  BASE_7
+  BASE_8
+  BASE_9
+  SECONDAIRE_1
+  SECONDAIRE_2
+  SECONDAIRE_3
+  BAC_INFO
+  BAC_MATH
+  BAC_SCIENCE
+  BAC_SPORT
+  CONCOURS
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String   
+  courses Course[]
+
+  division  Division @default(BAC_INFO)
+  @@unique([name, division])
+
+
+  @@map("categories")
+}
+
+
+
+
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  title       String
+  description String?
+  price       Float?
+  author      String?
+
+  image       String?  
+  oldPrice    Float?   
+  badge       String?
+  totalDuration  Int? 
+  
+  division    Division @default(BAC_INFO)
+
+  rating      Float?   
+  ratingCount Int      @default(0) 
+
+
+  categories  Category[]
+
+  chapters Chapter[]
+
+  enrollments Enrollment[]
+
+  testimonials Testimonial[]
+  // Add more fields later like video urls, file paths etc.
+
+  @@map("courses")
+}
+
+model Testimonial {
+  id          Int    @id @default(autoincrement())
+  text        String
+
+  userId      Int
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  courseId    Int
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+
+
+  @@map("testimonials")
+}
+
+model Chapter {
+  id          Int      @id @default(autoincrement())
+  title       String
+  order       Int @default(1)
+  courseId    Int
+  course      Course   @relation(fields: [courseId], references: [id])
+  lessons     Lesson[]
+
+  @@map("chapters")
+}
+
+model Lesson {
+  id          Int     @id @default(autoincrement())
+  title       String
+  order       Int @default(1)
+  videoUrl    String?
+  resourceUrl String? // For downloadable files
+  chapterId   Int
+  chapter     Chapter @relation(fields: [chapterId], references: [id])
+
+  @@map("lessons")
+}
+
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId    Int
+  courseId  Int
+
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId]) // A user can only enroll in the same course once
+  @@map("enrollments")
+}

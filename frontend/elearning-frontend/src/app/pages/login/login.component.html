@@ -1,0 +1,24 @@
+<div class="auth-page-container">
+  <div class="image-panel">
+    </div>
+
+  <div class="form-panel">
+    <div class="form-wrapper">
+      <h2>Sign in to your account</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Email" formControlName="email" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Password" formControlName="password" />
+        </div>
+        <button type="submit" [disabled]="!loginForm.valid" class="auth-button">Sign In</button>
+      </form>
+      <div class="switch-link">
+        <span>Don't have an account? <a routerLink="/signup">Sign up</a></span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="container">
+  <h2>Learners are viewing</h2>
+  <div class="carousel-wrapper">
+    <button *ngIf="isCarousel" class="nav-arrow left-arrow" (click)="prevSlide()">‹</button>
+
+    <div class="carousel-track-wrapper">
+      <div class="carousel-track" 
+           [class.no-transition]="transitioning && isCarousel"
+           [style.transform]="isCarousel ? 'translateX(-' + (currentIndex * slideWidth) + 'px)' : 'none'">
+        <app-course-card *ngFor="let course of displayCourses" [course]="course"></app-course-card>
+      </div>
+    </div>
+
+    <button *ngIf="isCarousel" class="nav-arrow right-arrow" (click)="nextSlide()">›</button>
+  </div>
+</div>

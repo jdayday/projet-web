@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>User Management</h2>
+  <p>Manage all registered users on the platform.</p>
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Joined At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.createdAt | date: 'medium' }}</td>
+        <td>
+          <a [routerLink]="['/admin/users', user.id, 'edit']" class="btn-icon">✏️</a>
+          <button (click)="deleteUser(user.id)" class="btn-icon btn-delete">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

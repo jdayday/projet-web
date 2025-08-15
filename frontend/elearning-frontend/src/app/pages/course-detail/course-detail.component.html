@@ -1,0 +1,6 @@
+<div *ngIf="course" class="course-detail-container">
+  <h1>{{ course.title }}</h1>
+  <p class="description">{{ course.description }}</p>
+  <div class="price">Price: ${{ course.price }}</div>
+  <button (click)="buyCourse()">Buy Now</button>
+</div>

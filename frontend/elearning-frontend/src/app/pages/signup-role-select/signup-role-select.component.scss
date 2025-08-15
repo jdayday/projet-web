@@ -1,0 +1,30 @@
+@use '../auth.styles.css';
+
+/* Styles specific to the role selection cards */
+.card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  background-color: white;
+}
+
+.role-card:hover {
+  border-color: #00b8d4;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}

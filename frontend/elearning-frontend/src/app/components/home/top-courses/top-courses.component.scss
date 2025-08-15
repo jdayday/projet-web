@@ -1,0 +1,53 @@
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.carousel-wrapper {
+  position: relative;
+ 
+  width: calc((250px * 4) + (1.5rem * 3));
+  margin: auto; 
+}
+
+.carousel-track-wrapper {
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem; /* 24px */
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-track.no-transition {
+  transition: none;
+}
+
+app-course-card {
+  flex: 0 0 250px; /* Card width */
+}
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.left-arrow {
+  left: -22px;
+}
+
+.right-arrow {
+  right: -22px;
+}

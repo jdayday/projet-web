@@ -1,0 +1,35 @@
+.testimonials-section {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+.testimonial-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+.quote {
+  font-size: 1.1rem;
+  flex-grow: 1;
+  margin: 0 0 1.5rem 0;
+}
+.author-details {
+  margin-bottom: 1rem;
+}
+.author-name {
+  font-weight: bold;
+}
+.course-link {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: none;
+}

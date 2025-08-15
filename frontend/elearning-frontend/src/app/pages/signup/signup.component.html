@@ -1,0 +1,75 @@
+<div class="auth-page-container">
+  <div class="image-panel">
+    </div>
+
+  <div class="form-panel">
+    <h2>Create an account</h2>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <input id="firstName" type="text" placeholder="First name" formControlName="firstName">
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <input id="lastName" type="text" placeholder="Last name" formControlName="lastName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Email *" formControlName="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input id="phone" type="text" placeholder="Phone Number" formControlName="phone">
+        <p class="helper-text">You will receive an SMS on this number, make sure it is correct</p>
+      </div>
+
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input id="dateOfBirth" type="date" formControlName="dateOfBirth">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Password (minimum 8 characters)" formControlName="password">
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm the password</label>
+          <input id="confirmPassword" type="password" placeholder="Confirm the password" formControlName="confirmPassword">
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="state">Choose your state</label>
+          <input id="state" type="text" placeholder="Choose your state" formControlName="state">
+        </div>
+        <div class="form-group" *ngIf="isStudent">
+          <label for="division">Choose your division</label>
+          <select id="division" formControlName="division">
+            <option value="" disabled>Choose your division</option>
+            <option value="7eme">7ème de base</option>
+            <option value="8eme">8ème de base</option>
+            <option value="9eme">9ème de base</option>
+            <option value="1ere">1ère secondaire</option>
+            <option value="2eme">2ème secondaire</option>
+            <option value="3eme">3ème secondaire</option>
+            <option value="bac-info">Bac Informatique</option>
+            <option value="bac-math">Bac Maths</option>
+            <option value="bac-science">Bac Science Exp</option>
+            <option value="bac-sport">Bac Sport</option>
+            <option value="concours">Candidats au concours</option>
+              </select>
+        </div>
+      </div>
+
+      <p class="terms-text">By creating this account, you agree to the platform's terms of use and privacy policy</p>
+
+      <button type="submit" [disabled]="!signupForm.valid">Create an account</button>
+    </form>
+  </div>
+</div>

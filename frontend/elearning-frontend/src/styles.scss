@@ -1,0 +1,26 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  --primary-color: #6a5acd; /* A nice slate blue/purple */
+  --secondary-color: #f0f2f5;
+  --card-bg-color: #ffffff;
+  --text-color: #333;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}

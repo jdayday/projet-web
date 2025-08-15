@@ -1,0 +1,21 @@
+<div class="container" *ngIf="stats">
+  <h1>Admin Dashboard</h1>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h2>Total Users</h2>
+      <p>{{ stats.userCount }}</p>
+    </div>
+    <div class="stat-card">
+      <h2>Total Courses</h2>
+      <p>{{ stats.courseCount }}</p>
+    </div>
+    <div class="stat-card">
+      <h2>Total Sales</h2>
+      <p>{{ stats.enrollmentCount }}</p>
+    </div>
+    <div class="stat-card">
+      <h2>Total Revenue</h2>
+      <p>${{ stats.totalRevenue | number: '1.2-2' }}</p>
+    </div>
+  </div>
+</div>

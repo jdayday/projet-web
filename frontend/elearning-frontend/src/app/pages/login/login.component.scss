@@ -1,0 +1,92 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #f0f8ff; /* Light blue page background */
+  min-height: 90vh;
+}
+
+.auth-page-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  width: 100%;
+  max-width: 950px;
+  min-height: 600px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.image-panel {
+  background-color: #fff;
+  background-image: url('/assets/images/mydrawing2.svg');
+  background-size: 50%; /* Smaller size */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 380px;
+}
+
+/* Re-add form styles here for consistency */
+.form-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.form-group label::after {
+  content: ' *';
+  color: #e74c3c;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d7dc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.auth-button {
+  display: block;
+  margin: 1rem auto 0 auto; /* top, right, bottom, left */
+  width: 100%; /* Or keep it 100% to match input width */
+  max-width: 100%; /* Optional: ensures it doesn’t overflow */
+  padding: 12px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.switch-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
