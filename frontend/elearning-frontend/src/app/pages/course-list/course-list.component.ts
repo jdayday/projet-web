@@ -8,30 +8,28 @@ import { CategoryService } from '../../services/category.service';
 import { CourseService } from '../../services/course.service';
 //Models
 import { Course } from '../../models/course.model';
-//import { debounceTime, distinctUntilChanged,startWith } from 'rxjs';
-//import { CourseCardComponent } from '../../components/course-card/course-card.component';
 
 //Reusable Components
 import { TopCoursesComponent } from '../../components/home/top-courses/top-courses.component';
 import { CourseFilterComponent } from '../../components/course-filter/course-filter.component';
 import { CourseCardComponent } from '../../components/course-card/course-card.component';
 
-
-
 @Component({
   selector: 'app-course-list',
   standalone: true,
-  imports: [CommonModule,  TopCoursesComponent,
+  imports: [
+    CommonModule,
+    TopCoursesComponent,
     ReactiveFormsModule,
     CourseFilterComponent,
     CourseCardComponent
-
-  ], 
+  ],
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss']
 })
 export class CourseListComponent implements OnInit {
-  courses: Course[] = [];
+  featuredCourses: Course[] = [];
+  allCourses: Course[] = [];
   categories: any[] = [];
   divisions = [
     'BASE_7', 'BASE_8', 'BASE_9', 'SECONDAIRE_1', 'SECONDAIRE_2', 'SECONDAIRE_3',
@@ -41,9 +39,7 @@ export class CourseListComponent implements OnInit {
   loading = false;
   activeDivision: string | null = null;
   activeCategoryId: number | null = null;
-  private currentSearchTerm = '';
   sidebarFilterForm: FormGroup;
-
 
   constructor(
     private courseService: CourseService,
@@ -51,13 +47,11 @@ export class CourseListComponent implements OnInit {
     private categoryService: CategoryService,
     private route: ActivatedRoute,
     private fb: FormBuilder
-  ) 
-  {
+  ) {
     this.sidebarFilterForm = this.fb.group({
       minRating: [null],
       maxDuration: [null],
     });
-
   }
 
   ngOnInit(): void {
@@ -69,82 +63,62 @@ export class CourseListComponent implements OnInit {
     this.sidebarFilterForm.valueChanges.subscribe(() => {
       this.loadAllCourses();
     });
-
-
-    /*this.courseService.searchTerm$.pipe(
-      startWith(''),
-      debounceTime(300), 
-      distinctUntilChanged()
-    ).subscribe(searchTerm => {
-      this.currentSearchTerm = searchTerm;
-      this.loadCourses();
-    });*/
   }
 
-    loadInitialData(): void {
-    this.activeCategoryId = null; 
-    this.loadCourses(); 
-    this.categoryService.getAllCategories(this.activeDivision).subscribe(data => {
-      this.categories = data;
-    });
+  loadInitialData(): void {
+    this.activeCategoryId = null;
+    this.loadFeaturedCourses();
+    this.loadAllCourses();
+    this.loadCategories();
   }
 
-
-  loadCourses(): void {
+  loadFeaturedCourses(): void {
     this.loading = true;
-
-    this.courseService.getAllCourses(undefined,
-       this.activeCategoryId,
-       this.activeDivision
-      ).subscribe({    
+    this.courseService.getAllCourses(
+      undefined,
+      this.activeCategoryId,
+      this.activeDivision
+    ).subscribe({
       next: (data) => {
-        console.log('Backend Response:', data);
-
-        this.courses = data;
+        this.featuredCourses = data;
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading courses:', error);
+        console.error('Error loading featured courses:', error);
         this.loading = false;
       }
     });
   }
 
-    loadAllCourses(): void {
+  loadAllCourses(): void {
     const sidebarFilters = this.sidebarFilterForm.value;
-    
-    // This fetches data ONLY for the main grid, using the page's division and sidebar filters
     this.courseService.getAllCourses(
-      undefined, // No search term in this section
-      null,      // No category filter in this section (we use the sidebar instead)
-      this.activeDivision, // Use the division from the URL
+      undefined,
+      null, // Category filter is not used for the "All Courses" section
+      this.activeDivision,
       sidebarFilters.minRating,
       sidebarFilters.maxDuration
     ).subscribe(data => {
-      this.courses = data;
+      this.allCourses = data;
     });
   }
-
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe(data => {
-      this.categories = data;
-    });
-  }
-
-    onSelectDivision(division: string): void {
-    this.activeDivision = division;
-    this.activeCategoryId = null;
-    this.loadCourses(); 
-    
     this.categoryService.getAllCategories(this.activeDivision).subscribe(data => {
       this.categories = data;
     });
   }
 
+  onSelectDivision(division: string): void {
+    this.activeDivision = division;
+    this.activeCategoryId = null;
+    this.loadFeaturedCourses();
+    this.loadAllCourses();
+    this.loadCategories();
+  }
 
   onFilterByCategory(categoryId: number | null): void {
     this.activeCategoryId = categoryId;
-    this.loadCourses();
+    this.loadFeaturedCourses();
   }
 }

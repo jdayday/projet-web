@@ -1,74 +1,47 @@
 <div class="container">
  <section class="featured-section">
-
   <h1>Our Courses</h1>
-
   <div class="category-filters">
-    <button (click)="onFilterByCategory(null)" 
-            [class.active]="activeCategoryId === null">
-      All
-    </button>
-    <button *ngFor="let category of categories" 
-            (click)="onFilterByCategory(category.id)"
-            [class.active]="activeCategoryId === category.id">
-      {{ category.name }}
-    </button>
+  <button (click)="onFilterByCategory(null)"
+  [class.active]="activeCategoryId === null">
+  All
+  </button>
+  <button *ngFor="let category of categories"
+  (click)="onFilterByCategory(category.id)"
+  [class.active]="activeCategoryId === category.id">
+  {{ category.name }}
+  </button>
   </div>
+  <app-top-courses [courses]="featuredCourses"></app-top-courses>
+ </section>
 
-  <app-top-courses [courses]="courses"></app-top-courses>
-</section>
-
-  <section class="all-courses-section">
+ <section class="all-courses-section">
   <h2>All Courses in {{ activeDivision?.replace('_', ' ') }}</h2>
   <div class="catalog-container" [formGroup]="sidebarFilterForm">
-    
-    <aside class="filter-sidebar">
-      <h3>Filters</h3>
-      <div class="filter-group">
-        <h4>Ratings</h4>
-        <div class="filter-option">
-          <input type="radio" name="rating" id="rating-4.5" value="4.5" formControlName="minRating"> 4.5 & up
-        </div>
-        <div class="filter-option">
-          <input type="radio" name="rating" id="rating-4.0" value="4.0" formControlName="minRating"> 4.0 & up
-        </div>
-        </div>
-      <div class="filter-group">
-        <h4>Video Duration</h4>
-        <div class="filter-option">
-          <input type="radio" name="duration" id="duration-60" value="60" formControlName="maxDuration"> 0-1 Hour
-        </div>
-        </div>
-    </aside>
-
-    <main class="course-results">
-      <div class="course-grid">
-        <app-course-card *ngFor="let course of courses" [course]="course"></app-course-card>
-      </div>
-    </main>
-
+  <aside class="filter-sidebar">
+  <h3>Filters</h3>
+  <div class="filter-group">
+  <h4>Ratings</h4>
+  <div class="filter-option">
+  <input type="radio" name="rating" id="rating-4.5" value="4.5" formControlName="minRating"> 4.5 & up
   </div>
-  </section>
-
-</div>
-
-<!--
-<div class="course-grid">
-  <div *ngFor="let course of courses" class="course-card-wrapper">
-
-    <a *ngIf="(authService.userRole$ | async) !== 'ADMIN'" [routerLink]="['/courses', course.id]">
-      <app-course-card [course]="course"></app-course-card>
-    </a>
-
-    <ng-container *ngIf="(authService.userRole$ | async) === 'ADMIN'">
-      <app-course-card [course]="course"></app-course-card>
-      <div class="admin-actions">
-        <a [routerLink]="['/admin/courses', course.id]" class="manage-button">
-          Manage Course
-        </a>
-      </div>
-    </ng-container>
-
+  <div class="filter-option">
+  <input type="radio" name="rating" id="rating-4.0" value="4.0" formControlName="minRating"> 4.0 & up
   </div>
+  </div>
+  <div class="filter-group">
+  <h4>Video Duration</h4>
+  <div class="filter-option">
+  <input type="radio" name="duration" id="duration-60" value="60" formControlName="maxDuration"> 0-1 Hour
+  </div>
+  </div>
+  </aside>
+
+  <main class="course-results">
+  <div class="course-grid">
+  <app-course-card *ngFor="let course of allCourses" [course]="course"></app-course-card>
+  </div>
+  </main>
+  </div>
+ </section>
 </div>
--->
