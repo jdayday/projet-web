@@ -15,24 +15,41 @@ export class CourseService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   getAllCourses(options?: {
-  search?: string;
-  categoryId?: number | null;
-  division?: string | null;
-  minRating?: number | null;
-  maxDuration?: number | null;
-  sort?: string | null;
-}) {
-  let params = new HttpParams();
+    search?: string;
+    categoryId?: number | null;
+    division?: string | null;
+    minRating?: number | null;
+    minDuration?: number | null;   
+    maxDuration?: number | null;
+    sort?: string | null;
+  }) {
+    let params = new HttpParams();
 
-  if (options?.search) params = params.append('search', options.search);
-  if (options?.categoryId) params = params.append('categoryId', options.categoryId);
-  if (options?.division) params = params.append('division', options.division);
-  if (options?.minRating) params = params.append('minRating', options.minRating);
-  if (options?.maxDuration) params = params.append('maxDuration', options.maxDuration);
-  if (options?.sort) params = params.append('sort', options.sort);
+    if (options?.search != null && options.search !== '') {
+      params = params.set('search', options.search);
+    }
+    if (options?.categoryId != null) {
+      params = params.set('categoryId', options.categoryId.toString());
+    }
+    if (options?.division != null) {
+      params = params.set('division', options.division);
+    }
+    if (options?.minRating != null) {
+      params = params.set('minRating', options.minRating.toString());
+    }
+    if (options?.minDuration != null) {
+      params = params.set('minDuration', options.minDuration.toString());
+    }
+    if (options?.maxDuration != null) {
+      params = params.set('maxDuration', options.maxDuration.toString());
+    }
+    if (options?.sort != null) {
+      params = params.set('sort', options.sort);
+    }
 
-  return this.http.get<Course[]>(`${this.apiUrl}/courses`, { params });
-}
+    return this.http.get<Course[]>(`${this.apiUrl}/courses`, { params });
+  }
+
 
 
   getCourseById(id: number) {

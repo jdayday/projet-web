@@ -101,6 +101,7 @@ async getCourseContent(userId: number, courseId: number) {
     categoryId?: number, 
     division?: Division,
     minRating?: number,
+    minDuration?: number, 
     maxDuration?: number,
     sort?: 'relevant' | 'highestRated' | 'mostReviewed' | 'newest',
 
@@ -109,13 +110,13 @@ async getCourseContent(userId: number, courseId: number) {
 
     if (division) { where.division = division; }
     if (minRating) where.rating = { gte: minRating };
-     if (maxDuration) {
-    if (maxDuration === 1021) { 
-      where.totalDuration = { gte: 1020 };
-    } else {
-      where.totalDuration = { lte: maxDuration }; 
-    }
-  }
+
+    if (minDuration != null || maxDuration != null) {
+        where.totalDuration = {};
+        if (minDuration != null) where.totalDuration.gte = minDuration;
+        if (maxDuration != null) where.totalDuration.lte = maxDuration;
+      }
+
 
     if (search) {
       where.OR = [

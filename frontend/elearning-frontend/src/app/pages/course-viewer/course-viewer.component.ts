@@ -15,6 +15,8 @@ export class CourseViewerComponent implements OnInit {
   courseContent: any;
   selectedLesson: any;
   safeVideoUrl: SafeResourceUrl | null = null;
+  private currentLessonIndex = -1;
+  private lessons: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -27,12 +29,31 @@ export class CourseViewerComponent implements OnInit {
     if (courseId) {
       this.courseService.getCourseContent(courseId).subscribe(data => {
         this.courseContent = data;
+        this.initializeLessons();
+        if (this.lessons.length > 0) {
+          this.selectLesson(this.lessons[0]);
+        }
+      });
+    }
+  }
+
+  private initializeLessons(): void {
+    this.lessons = [];
+    if (this.courseContent && this.courseContent.chapters) {
+      this.courseContent.chapters.forEach((chapter: any) => {
+        if (chapter.lessons) {
+          chapter.lessons.forEach((lesson: any) => {
+            lesson.completed = false; 
+            this.lessons.push(lesson);
+          });
+        }
       });
     }
   }
 
   selectLesson(lesson: any) {
     this.selectedLesson = lesson;
+    this.currentLessonIndex = this.lessons.findIndex(l => l === lesson);
     
     if (lesson.videoUrl) {
       const vimeoUrl = `https://player.vimeo.com/video/${lesson.videoUrl}`;
@@ -40,5 +61,29 @@ export class CourseViewerComponent implements OnInit {
     } else {
       this.safeVideoUrl = null;
     }
+  }
+
+  toggleLessonCompletion(lesson: any) {
+    lesson.completed = !lesson.completed;
+  }
+
+  previousLesson() {
+    if (this.currentLessonIndex > 0) {
+      this.selectLesson(this.lessons[this.currentLessonIndex - 1]);
+    }
+  }
+
+  nextLesson() {
+    if (this.currentLessonIndex < this.lessons.length - 1) {
+      this.selectLesson(this.lessons[this.currentLessonIndex + 1]);
+    }
+  }
+
+  isFirstLesson(): boolean {
+    return this.currentLessonIndex === 0;
+  }
+
+  isLastLesson(): boolean {
+    return this.currentLessonIndex === this.lessons.length - 1;
   }
 }

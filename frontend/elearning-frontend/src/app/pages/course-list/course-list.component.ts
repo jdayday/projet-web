@@ -54,6 +54,7 @@ export class CourseListComponent implements OnInit {
   ) {
     this.sidebarFilterForm = this.fb.group({
       minRating: [null],
+      minDuration: [null],
       maxDuration: [null],
       categoryId: [null],
       sortBy: ['highest_rated'],
@@ -105,6 +106,7 @@ export class CourseListComponent implements OnInit {
         categoryId: sidebarFilters.categoryId,
         division: this.activeDivision,
         minRating: sidebarFilters.minRating,
+        minDuration: sidebarFilters.minDuration,
         maxDuration: sidebarFilters.maxDuration
       })
       .subscribe((data) => {
@@ -153,4 +155,21 @@ export class CourseListComponent implements OnInit {
       }
     }
   }
+
+  toggleDurationFilter(min: number | null, max: number | null): void {
+  const minControl = this.sidebarFilterForm.get('minDuration');
+  const maxControl = this.sidebarFilterForm.get('maxDuration');
+
+  if (minControl && maxControl) {
+    if (minControl.value === min && maxControl.value === max) {
+      minControl.reset();
+      maxControl.reset();
+    } else {
+      minControl.setValue(min);
+      maxControl.setValue(max);
+    }
+  }
+}
+
+
 }

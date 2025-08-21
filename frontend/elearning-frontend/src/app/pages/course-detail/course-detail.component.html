@@ -1,6 +1,68 @@
-<div *ngIf="course" class="course-detail-container">
-  <h1>{{ course.title }}</h1>
-  <p class="description">{{ course.description }}</p>
-  <div class="price">Price: ${{ course.price }}</div>
-  <button (click)="buyCourse()">Buy Now</button>
+<div class="course-detail-container" *ngIf="!isLoading && !error">
+  <div *ngIf="course">
+    <div class="header-section">
+      <div class="header-content">
+        <h1>{{ course.title }}</h1>
+        <p class="subtitle">{{ course.subtitle }}</p>
+        <div class="rating">
+          <span class="stars">★★★★☆</span>
+          <span>{{ course.rating }} ({{ course.ratingCount }} ratings)</span>
+          <span>12,345 students</span>
+        </div>
+        <p class="author">Created by <a [routerLink]="['/instructors', course.author.id]">{{ course.author}}</a></p>
+      </div>
+    </div>
+
+    <div class="main-layout">
+      <div class="content-body">
+        
+        <div class="learning-box" *ngIf="course.whatYoullLearn?.length">
+          <h2>What you'll learn</h2>
+          <ul>
+            <li *ngFor="let point of course.whatYoullLearn">{{ point }}</li>
+          </ul>
+        </div>
+
+        <div class="course-content">
+          <h2>Course content</h2>
+          <div *ngFor="let chapter of course.chapters" class="chapter">
+            <details>
+              <summary>{{ chapter.title }}</summary>
+              <ul>
+                <li *ngFor="let lesson of chapter.lessons">
+                  <span class="lesson-title">{{ lesson.title }}</span>
+                  <span class="lesson-duration">{{ lesson.duration }}</span>
+                </li>
+              </ul>
+            </details>
+          </div>
+        </div>
+
+        <div class="description">
+          <h2>Description</h2>
+          <p [innerHTML]="course.description"></p>
+        </div>
+
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-inner">
+          <img [src]="course.image" alt="Course Thumbnail" class="course-thumbnail">
+          <div class="price">${{ course.price }}</div>
+          <button class="enroll-button" (click)="enrollNow()">Buy Now</button>
+          <div class="course-includes">
+            <h4>This course includes:</h4>
+            <ul>
+              <li>{{ course.totalDuration/60 }} hours on-demand video</li>
+              <li>Full lifetime access</li>
+              <li>Access on mobile and TV</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div *ngIf="isLoading" class="loading-message">Loading course...</div>
+<div *ngIf="error" class="error-message">{{ error }}</div>

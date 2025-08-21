@@ -15,24 +15,33 @@ export class CoursesController {
     return this.coursesService.create(createCourseDto);
   }
 
-  @Public()
-  @Get()
-  findAll(
-    @Query('search') search?: string,
-    @Query('categoryId') categoryId?: string,
-    @Query('division') division?: Division,
-    @Query('minRating') minRating?: string,
-    @Query('maxDuration') maxDuration?: string,
-    @Query('sort') sort?: 'relevant' | 'highestRated' | 'mostReviewed' | 'newest',
-
-
+@Public()
+@Get()
+findAll(
+  @Query('search') search?: string,
+  @Query('categoryId') categoryId?: string,
+  @Query('division') division?: Division,
+  @Query('minRating') minRating?: string,
+  @Query('minDuration') minDuration?: string,
+  @Query('maxDuration') maxDuration?: string,
+  @Query('sort') sort?: 'relevant' | 'highestRated' | 'mostReviewed' | 'newest',
   ) {
     const categoryIdNum = categoryId ? parseInt(categoryId, 10) : undefined;
     const minRatingNum = minRating ? parseFloat(minRating) : undefined;
-    const maxDurationNum = maxDuration ? parseInt(maxDuration) : undefined;
+    const minDurationNum = minDuration ? parseInt(minDuration, 10) : undefined;
+    const maxDurationNum = maxDuration ? parseInt(maxDuration, 10) : undefined;
 
-    return this.coursesService.findAll(search, categoryIdNum, division,minRatingNum, maxDurationNum, sort);
+    return this.coursesService.findAll(
+      search,
+      categoryIdNum,
+      division,
+      minRatingNum,
+      minDurationNum,
+      maxDurationNum,
+      sort,
+    );
   }
+
   @Public()
   @Get('top-rated')
   findTopRated() {

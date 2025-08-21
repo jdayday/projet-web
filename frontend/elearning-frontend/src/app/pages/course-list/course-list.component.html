@@ -118,63 +118,58 @@
             </div>
           </div>
 
-          <!-- Duration Filter -->
           <div class="filter-group">
-            <h4 class="filter-group-header" (click)="isDurationFilterOpen = !isDurationFilterOpen">
-              Video Duration
-              <span class="accordion-icon" [class.open]="isDurationFilterOpen"></span>
-            </h4>
-            <div class="filter-options-container" *ngIf="isDurationFilterOpen">
-              <div class="filter-option">
-                <label>
-                  <input 
-                    type="radio" 
-                    name="duration" 
-                    value="0-1"
-                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '0-1'"
-                    (click)="toggleRadioFilter('maxDuration', '0-1')"
-                  >
-                  <span>0–1 Hour</span>
-                </label>
-              </div>
-              <div class="filter-option">
-                <label>
-                  <input 
-                    type="radio" 
-                    name="duration" 
-                    value="1-3"
-                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '1-3'"
-                    (click)="toggleRadioFilter('maxDuration', '1-3')"
-                  >
-                  <span>1–3 Hours</span>
-                </label>
-              </div>
-              <div class="filter-option">
-                <label>
-                  <input 
-                    type="radio" 
-                    name="duration" 
-                    value="6-17"
-                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '6-17'"
-                    (click)="toggleRadioFilter('maxDuration', '6-17')"
-                  >
-                  <span>6–17 Hours</span>
-                </label>
-              </div>
-              <div class="filter-option">
-                <label>
-                  <input 
-                    type="radio" 
-                    name="duration" 
-                    value="17+"
-                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '17+'"
-                    (click)="toggleRadioFilter('maxDuration', '17+')"
-                  >
-                  <span>17+ Hours</span>
-                </label>
-              </div>
+            <h4>Video Duration</h4>
+
+            <div class="filter-option">
+              <label>
+                <input 
+                  type="radio" 
+                  name="duration"
+                  (click)="toggleDurationFilter(null, 60)"
+                  [checked]="sidebarFilterForm.get('minDuration')?.value === null && sidebarFilterForm.get('maxDuration')?.value === 60"
+                >
+                <span>0–1 Hour</span>
+              </label>
+            </div>
+
+            <div class="filter-option">
+              <label>
+                <input 
+                  type="radio" 
+                  name="duration"
+                  (click)="toggleDurationFilter(61, 180)"
+                  [checked]="sidebarFilterForm.get('minDuration')?.value === 61 && sidebarFilterForm.get('maxDuration')?.value === 180"
+                >
+                <span>1–3 Hours</span>
+              </label>
+            </div>
+
+            <div class="filter-option">
+              <label>
+                <input 
+                  type="radio" 
+                  name="duration"
+                  (click)="toggleDurationFilter(360, 1020)"
+                  [checked]="sidebarFilterForm.get('minDuration')?.value === 360 && sidebarFilterForm.get('maxDuration')?.value === 1020"
+                >
+                <span>6–17 Hours</span>
+              </label>
+            </div>
+
+            <div class="filter-option">
+              <label>
+                <input 
+                  type="radio" 
+                  name="duration"
+                  (click)="toggleDurationFilter(1021, null)"
+                  [checked]="sidebarFilterForm.get('minDuration')?.value === 1021 && sidebarFilterForm.get('maxDuration')?.value === null"
+                >
+                <span>17+ Hours</span>
+              </label>
             </div>
           </div>
+
         </aside>
 
   <main class="course-results">

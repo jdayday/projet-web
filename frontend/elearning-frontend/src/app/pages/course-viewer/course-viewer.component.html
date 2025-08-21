@@ -5,7 +5,10 @@
     <div *ngFor="let chapter of courseContent.chapters" class="chapter">
       <h4>{{ chapter.title }}</h4>
       <ul>
-        <li *ngFor="let lesson of chapter.lessons" (click)="selectLesson(lesson)" [class.selected]="lesson === selectedLesson">
+        <li *ngFor="let lesson of chapter.lessons" 
+            (click)="selectLesson(lesson)" 
+            [class.selected]="lesson === selectedLesson">
+          <input type="checkbox" [checked]="lesson.completed" (click)="toggleLessonCompletion(lesson); $event.stopPropagation();">
           {{ lesson.title }}
         </li>
       </ul>
@@ -30,6 +33,12 @@
       <a *ngIf="selectedLesson.resourceUrl" [href]="selectedLesson.resourceUrl" target="_blank" class="download-link">
         Download Resources
       </a>
+
+      <div class="navigation-controls">
+        <button (click)="previousLesson()" [disabled]="isFirstLesson()">Previous</button>
+        <button (click)="nextLesson()" [disabled]="isLastLesson()">Next</button>
+      </div>
+
     </div>
     <ng-template #noLessonSelected>
       <div class="welcome-message">

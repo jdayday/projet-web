@@ -26,13 +26,18 @@ model User {
   
   firstName   String?
   lastName    String?
+  headline    String? // e.g., "Full-Stack Web Developer"
+  bio         String?
+  avatarUrl   String?
+
   phone       String?
   dateOfBirth DateTime?
   state       String?
   division    String? 
 
   testimonials Testimonial[]
-  
+  courses     Course[]
+
   role Role @default(STUDENT)
   enrollments Enrollment[]
   @@map("users")
@@ -76,7 +81,8 @@ model Course {
   title       String
   description String?
   price       Float?
-  author      String?
+  authorId      Int?
+  author        User?      @relation(fields: [authorId], references: [id])
 
   image       String?  
   oldPrice    Float?   
@@ -131,7 +137,7 @@ model Lesson {
   title       String
   order       Int @default(1)
   videoUrl    String?
-  resourceUrl String?
+  resourceUrl String? // For downloadable files
   chapterId   Int
   chapter     Chapter @relation(fields: [chapterId], references: [id])
 
@@ -149,6 +155,6 @@ model Enrollment {
   user      User     @relation(fields: [userId], references: [id])
   course    Course   @relation(fields: [courseId], references: [id])
 
-  @@unique([userId, courseId]) 
+  @@unique([userId, courseId]) // A user can only enroll in the same course once
   @@map("enrollments")
 }
