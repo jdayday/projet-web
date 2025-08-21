@@ -7,7 +7,7 @@ export class TestimonialsService {
 
   findAll() {
     return this.prisma.testimonial.findMany({
-      // We include the related user's name and the course's info
+      
       include: {
         user: {
           select: {

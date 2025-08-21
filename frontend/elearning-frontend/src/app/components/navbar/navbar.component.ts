@@ -3,11 +3,12 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { CourseService } from '../../services/course.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
@@ -17,6 +18,8 @@ export class NavbarComponent {
     'BASE_7', 'BASE_8', 'BASE_9', 'SECONDAIRE_1', 'SECONDAIRE_2', 'SECONDAIRE_3',
     'BAC_INFO', 'BAC_MATH', 'BAC_SCIENCE', 'BAC_SPORT', 'CONCOURS'
   ];
+  searchQuery = '';
+
 
   get userRole$() {
     return this.authService.userRole$;
@@ -33,9 +36,12 @@ export class NavbarComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-    onSearch(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.courseService.setSearchTerm(input.value);
-    this.router.navigate(['/courses']); // Optional: navigate to courses page on search
+  onSearchSubmit(query: string): void {
+    console.log("Search query:", query);
+    if (query) {
+      this.router.navigate(['/search'], { queryParams: { q: query } });
+    }
   }
+
+
 }

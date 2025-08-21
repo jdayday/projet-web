@@ -28,12 +28,11 @@ export class HomeComponent {
   ngOnInit(): void {}
 
   onFiltersChanged(filters: { division: string | null; categoryId: number | null }): void {
-      console.log('HomeComponent: Received filters ->', filters);
-
-    this.courseService.getAllCourses(undefined, filters.categoryId, filters.division)
+    this.courseService.getAllCourses({
+      categoryId: filters.categoryId,
+      division: filters.division
+    })
       .subscribe(data => {
-              console.log('HomeComponent: Received courses from backend ->', data);
-
         this.filteredCourses = [...data];
       });
   }

@@ -14,29 +14,33 @@ export class CourseService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getAllCourses(search?: string,
-    categoryId?: number | null,
-    division?: string | null,
-    minRating?: number | null,
-    maxDuration?: number | null
-) {
-    let params = new HttpParams();
-    if (search) params = params.append('search', search);
-    if (categoryId) params = params.append('categoryId', categoryId);
-    if (division) params = params.append('division', division);
-    if (minRating) params = params.append('minRating', minRating);
-    if (maxDuration) params = params.append('maxDuration', maxDuration);
+  getAllCourses(options?: {
+  search?: string;
+  categoryId?: number | null;
+  division?: string | null;
+  minRating?: number | null;
+  maxDuration?: number | null;
+  sort?: string | null;
+}) {
+  let params = new HttpParams();
 
+  if (options?.search) params = params.append('search', options.search);
+  if (options?.categoryId) params = params.append('categoryId', options.categoryId);
+  if (options?.division) params = params.append('division', options.division);
+  if (options?.minRating) params = params.append('minRating', options.minRating);
+  if (options?.maxDuration) params = params.append('maxDuration', options.maxDuration);
+  if (options?.sort) params = params.append('sort', options.sort);
 
-    return this.http.get<Course[]>(`${this.apiUrl}/courses`, { params });
-  }
+  return this.http.get<Course[]>(`${this.apiUrl}/courses`, { params });
+}
+
 
   getCourseById(id: number) {
     return this.http.get<Course>(`${this.apiUrl}/courses/${id}`);
   }
 
   createCheckoutSession(courseId: number) {
-  const token = this.authService.getAccessToken(); // Assuming you inject AuthService
+  const token = this.authService.getAccessToken(); 
   const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
   return this.http.post<any>(`${this.apiUrl}/checkout/session/${courseId}`, {}, { headers });
   }
@@ -68,7 +72,7 @@ export class CourseService {
     this.searchTerm.next(term);
   }
 
- getTopRatedCourses(division?: string | null) { // <-- Add division parameter
+ getTopRatedCourses(division?: string | null) { 
     let params = new HttpParams();
     if (division) params = params.append('division', division);
     return this.http.get<Course[]>(`${this.apiUrl}/courses/top-rated`, { params });

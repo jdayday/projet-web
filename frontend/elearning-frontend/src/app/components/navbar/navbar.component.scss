@@ -20,8 +20,14 @@
 
 .nav-center {
   flex: 2 1 0%;
+  display: flex; 
   justify-content: center;
 }
+.nav-center form {
+  width: 100%;
+ max-width: 550px;
+}
+
 
 .nav-right {
   flex: 1 1 0%;

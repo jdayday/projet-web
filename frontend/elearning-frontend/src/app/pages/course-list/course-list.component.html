@@ -1,47 +1,187 @@
 <div class="container">
- <section class="featured-section">
-  <h1>Our Courses</h1>
-  <div class="category-filters">
-  <button (click)="onFilterByCategory(null)"
-  [class.active]="activeCategoryId === null">
-  All
-  </button>
-  <button *ngFor="let category of categories"
-  (click)="onFilterByCategory(category.id)"
-  [class.active]="activeCategoryId === category.id">
-  {{ category.name }}
-  </button>
-  </div>
-  <app-top-courses [courses]="featuredCourses"></app-top-courses>
- </section>
+  <section class="featured-section">
+    <h1>Our Courses</h1>
+    <div class="category-filters">
+      <button (click)="onFilterByCategory(null)" [class.active]="activeCategoryId === null">
+        All
+      </button>
+      <button *ngFor="let category of categories" (click)="onFilterByCategory(category.id)" [class.active]="activeCategoryId === category.id">
+        {{ category.name }}
+      </button>
+    </div>
+    <app-top-courses [courses]="featuredCourses"></app-top-courses>
+  </section>
 
- <section class="all-courses-section">
-  <h2>All Courses in {{ activeDivision?.replace('_', ' ') }}</h2>
-  <div class="catalog-container" [formGroup]="sidebarFilterForm">
-  <aside class="filter-sidebar">
-  <h3>Filters</h3>
-  <div class="filter-group">
-  <h4>Ratings</h4>
-  <div class="filter-option">
-  <input type="radio" name="rating" id="rating-4.5" value="4.5" formControlName="minRating"> 4.5 & up
-  </div>
-  <div class="filter-option">
-  <input type="radio" name="rating" id="rating-4.0" value="4.0" formControlName="minRating"> 4.0 & up
-  </div>
-  </div>
-  <div class="filter-group">
-  <h4>Video Duration</h4>
-  <div class="filter-option">
-  <input type="radio" name="duration" id="duration-60" value="60" formControlName="maxDuration"> 0-1 Hour
-  </div>
-  </div>
-  </aside>
+  <section class="all-courses-section">
+    <h2>All Courses in {{ activeDivision?.replace('_', ' ') }}</h2>
+      <div class="catalog-container" [formGroup]="sidebarFilterForm">
+        <aside class="filter-sidebar">
+          <h3>Filters</h3>
+
+          <!-- Category Filter -->
+          <div class="filter-group">
+            <h4 class="filter-group-header" (click)="isCategoryFilterOpen = !isCategoryFilterOpen">
+              Category
+              <span class="accordion-icon" [class.open]="isCategoryFilterOpen"></span>
+            </h4>
+            <div class="filter-options-container" *ngIf="isCategoryFilterOpen">
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="category" 
+                    [value]="null" 
+                    [checked]="sidebarFilterForm.get('categoryId')?.value === null"
+                    (click)="toggleRadioFilter('categoryId', null)"
+                  >
+                  <span>All Categories</span>
+                </label>
+              </div>
+              <div 
+                class="filter-option" 
+                *ngFor="let category of sidebarCategories | slice:0:(showAllCategories ? sidebarCategories.length : 4)">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="category" 
+                    [value]="category.id" 
+                    [checked]="sidebarFilterForm.get('categoryId')?.value === category.id"
+                    (click)="toggleRadioFilter('categoryId', category.id)"
+                  >
+                  <span>{{ category.name }}</span>
+                </label>
+              </div>
+              <button 
+                class="show-more-btn" 
+                *ngIf="sidebarCategories.length > 4" 
+                (click)="showAllCategories = !showAllCategories">
+                {{ showAllCategories ? 'Show Less' : 'Show More' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Rating Filter -->
+          <div class="filter-group">
+            <h4 class="filter-group-header" (click)="isRatingFilterOpen = !isRatingFilterOpen">
+              Ratings
+              <span class="accordion-icon" [class.open]="isRatingFilterOpen"></span>
+            </h4>
+            <div class="filter-options-container" *ngIf="isRatingFilterOpen">
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="rating" 
+                    value="4.5"
+                    [checked]="sidebarFilterForm.get('minRating')?.value === '4.5'"
+                    (click)="toggleRadioFilter('minRating', '4.5')"
+                  >
+                  <span>4.5 & up</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="rating" 
+                    value="4.0"
+                    [checked]="sidebarFilterForm.get('minRating')?.value === '4.0'"
+                    (click)="toggleRadioFilter('minRating', '4.0')"
+                  >
+                  <span>4.0 & up</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="rating" 
+                    value="3.5"
+                    [checked]="sidebarFilterForm.get('minRating')?.value === '3.5'"
+                    (click)="toggleRadioFilter('minRating', '3.5')"
+                  >
+                  <span>3.5 & up</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="rating" 
+                    value="3.0"
+                    [checked]="sidebarFilterForm.get('minRating')?.value === '3.0'"
+                    (click)="toggleRadioFilter('minRating', '3.0')"
+                  >
+                  <span>3.0 & up</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration Filter -->
+          <div class="filter-group">
+            <h4 class="filter-group-header" (click)="isDurationFilterOpen = !isDurationFilterOpen">
+              Video Duration
+              <span class="accordion-icon" [class.open]="isDurationFilterOpen"></span>
+            </h4>
+            <div class="filter-options-container" *ngIf="isDurationFilterOpen">
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="duration" 
+                    value="0-1"
+                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '0-1'"
+                    (click)="toggleRadioFilter('maxDuration', '0-1')"
+                  >
+                  <span>0–1 Hour</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="duration" 
+                    value="1-3"
+                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '1-3'"
+                    (click)="toggleRadioFilter('maxDuration', '1-3')"
+                  >
+                  <span>1–3 Hours</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="duration" 
+                    value="6-17"
+                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '6-17'"
+                    (click)="toggleRadioFilter('maxDuration', '6-17')"
+                  >
+                  <span>6–17 Hours</span>
+                </label>
+              </div>
+              <div class="filter-option">
+                <label>
+                  <input 
+                    type="radio" 
+                    name="duration" 
+                    value="17+"
+                    [checked]="sidebarFilterForm.get('maxDuration')?.value === '17+'"
+                    (click)="toggleRadioFilter('maxDuration', '17+')"
+                  >
+                  <span>17+ Hours</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </aside>
 
   <main class="course-results">
-  <div class="course-grid">
-  <app-course-card *ngFor="let course of allCourses" [course]="course"></app-course-card>
-  </div>
+    <div class="course-grid">
+      <app-course-grid-card *ngFor="let course of allCourses" [course]="course"></app-course-grid-card>
+    </div>
   </main>
-  </div>
- </section>
+    </div>
+  </section>
 </div>

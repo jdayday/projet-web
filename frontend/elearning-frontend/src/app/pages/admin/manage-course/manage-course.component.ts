@@ -17,7 +17,6 @@ export class ManageCourseComponent implements OnInit {
   lessonForm: FormGroup;
   courseId!: number;
 
-  // State to control form visibility
   showAddChapterForm = false;
   showAddLessonFormForChapterId: number | null = null;
 
@@ -26,13 +25,11 @@ export class ManageCourseComponent implements OnInit {
     private courseService: CourseService,
     private fb: FormBuilder,
   ) {
-    // Initialize the form for creating a new chapter
     this.chapterForm = this.fb.group({
       title: ['', Validators.required],
       order: [1, Validators.required],
     });
 
-    // Initialize the form for creating a new lesson
     this.lessonForm = this.fb.group({
       title: ['', Validators.required],
       order: [1, Validators.required],
@@ -57,9 +54,9 @@ export class ManageCourseComponent implements OnInit {
     if (this.chapterForm.invalid) return;
 
     this.courseService.addChapter(this.courseId, this.chapterForm.value).subscribe(() => {
-      this.loadCourseContent(); // Refresh content
-      this.chapterForm.reset({ order: 1 }); // Reset form
-      this.showAddChapterForm = false; // Hide form
+      this.loadCourseContent(); 
+      this.chapterForm.reset({ order: 1 }); 
+      this.showAddChapterForm = false; 
     });
   }
 
@@ -67,9 +64,9 @@ export class ManageCourseComponent implements OnInit {
     if (this.lessonForm.invalid) return;
 
     this.courseService.addLesson(chapterId, this.lessonForm.value).subscribe(() => {
-      this.loadCourseContent(); // Refresh content
-      this.lessonForm.reset({ order: 1 }); // Reset form
-      this.showAddLessonFormForChapterId = null; // Hide form
+      this.loadCourseContent();
+      this.lessonForm.reset({ order: 1 });
+      this.showAddLessonFormForChapterId = null; 
     });
   }
 }

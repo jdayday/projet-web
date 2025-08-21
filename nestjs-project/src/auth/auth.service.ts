@@ -30,7 +30,7 @@ export class AuthService {
           dateOfBirth: dto.dateOfBirth, 
           state: dto.state,            
           division: dto.division,     
-          role: dto.role === 'PARENT' ? 'PARENT' : 'STUDENT', // <-- Add this
+          role: dto.role === 'PARENT' ? 'PARENT' : 'STUDENT', 
  
 
         },
@@ -112,7 +112,6 @@ export class AuthService {
     });
   }
 
-  // 2. Update the function signature to accept 'name'
   async getTokens(
     userId: number,
     email: string,

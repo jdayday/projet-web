@@ -32,7 +32,6 @@ export class CourseDetailComponent implements OnInit {
   buyCourse() {
     if (this.course) {
         this.courseService.createCheckoutSession(this.course.id).subscribe(session => {
-            // Redirect the user to the Stripe payment page
             window.location.href = session.url;
         });
     }

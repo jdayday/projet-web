@@ -22,11 +22,11 @@ export class CheckoutService {
       line_items: [
         {
           price_data: {
-            currency: 'usd', // You can change this
+            currency: 'usd', 
             product_data: {
               name: course.title,
             },
-            unit_amount: course.price * 100, // Price in cents
+            unit_amount: course.price * 100, 
           },
           quantity: 1,
         },

@@ -42,9 +42,7 @@ export class CoursesService {
     });
   }
 
-  // ... inside CoursesService class
 async getCourseContent(userId: number, courseId: number) {
-  // First, check if the user is enrolled in this course
   const user = await this.prisma.user.findUnique({ where: { id: userId } });
   const enrollment = await this.prisma.enrollment.findUnique({
     where: {
@@ -58,7 +56,7 @@ async getCourseContent(userId: number, courseId: number) {
   if (user.role !== 'ADMIN' && !enrollment) {
     throw new ForbiddenException('You are not enrolled in this course');
   }
-  // If they are enrolled, return the course with all its content
+
   return this.prisma.course.findUnique({
     where: { id: courseId },
     include: {
@@ -104,12 +102,20 @@ async getCourseContent(userId: number, courseId: number) {
     division?: Division,
     minRating?: number,
     maxDuration?: number,
+    sort?: 'relevant' | 'highestRated' | 'mostReviewed' | 'newest',
+
   ) {
     const where: Prisma.CourseWhereInput = {};
 
     if (division) { where.division = division; }
     if (minRating) where.rating = { gte: minRating };
-    if (maxDuration) where.totalDuration = { lte: maxDuration };
+     if (maxDuration) {
+    if (maxDuration === 1021) { 
+      where.totalDuration = { gte: 1020 };
+    } else {
+      where.totalDuration = { lte: maxDuration }; 
+    }
+  }
 
     if (search) {
       where.OR = [
@@ -122,7 +128,26 @@ async getCourseContent(userId: number, courseId: number) {
       where.categories = { some: { id: categoryId } };
     }
 
-    return this.prisma.course.findMany({ where, include: { categories: true } });
+    let orderBy: Prisma.CourseOrderByWithRelationInput | undefined;
+
+  switch (sort) {
+    case 'highestRated':
+      orderBy = { rating: 'desc' };
+      break;
+    case 'mostReviewed':
+      orderBy = { ratingCount: 'desc' }; 
+      break;
+    case 'newest':
+      orderBy = { createdAt: 'desc' };
+      break;
+    default:
+      orderBy = undefined; 
+  }
+
+    return this.prisma.course.findMany({ 
+      where,
+      orderBy,
+      include: { categories: true } });
   }
 
 findTopRated(division?: Division) {
@@ -131,7 +156,6 @@ findTopRated(division?: Division) {
     };
     if (division) { where.division = division; }
 
-    // This is the corrected return statement
     return this.prisma.course.findMany({
         where,
         orderBy: {

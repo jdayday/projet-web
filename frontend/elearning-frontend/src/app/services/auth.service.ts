@@ -11,19 +11,16 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private apiUrl = 'http://localhost:3000';
   
-  // Create a BehaviorSubject to hold the login state.
-  // It's initialized based on whether a token already exists.
+  
   private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
   private currentUserRole = new BehaviorSubject<string | null>(this.getRoleFromToken());
   userRole$ = this.currentUserRole.asObservable();
   
 
-  // Expose the login state as an Observable that components can subscribe to.
   isLoggedIn$ = this.loggedIn.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  // A helper to check for a token
   private hasToken(): boolean {
     return !!localStorage.getItem('access_token');
   }
@@ -48,7 +45,7 @@ export class AuthService {
         tap((response) => {
           this.saveTokens(response);
           this.loggedIn.next(true);
-          this.currentUserRole.next(this.getRoleFromToken()); // Broadcast that the user is now logged in
+          this.currentUserRole.next(this.getRoleFromToken()); 
         })
       );
   }
@@ -60,7 +57,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('access_token');
     this.loggedIn.next(false);
-    this.currentUserRole.next(null); // Broadcast that the user is now logged out
+    this.currentUserRole.next(null);
   }
 
     signup(credentials: any) {
@@ -70,7 +67,7 @@ export class AuthService {
         tap((response) => {
           this.saveTokens(response);
           this.loggedIn.next(true);
-          this.currentUserRole.next(this.getRoleFromToken()); // Broadcast login state
+          this.currentUserRole.next(this.getRoleFromToken());
         })
       );
   }

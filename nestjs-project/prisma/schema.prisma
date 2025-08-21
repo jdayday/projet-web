@@ -96,7 +96,6 @@ model Course {
   enrollments Enrollment[]
 
   testimonials Testimonial[]
-  // Add more fields later like video urls, file paths etc.
 
   @@map("courses")
 }
@@ -132,7 +131,7 @@ model Lesson {
   title       String
   order       Int @default(1)
   videoUrl    String?
-  resourceUrl String? // For downloadable files
+  resourceUrl String?
   chapterId   Int
   chapter     Chapter @relation(fields: [chapterId], references: [id])
 
@@ -150,6 +149,6 @@ model Enrollment {
   user      User     @relation(fields: [userId], references: [id])
   course    Course   @relation(fields: [courseId], references: [id])
 
-  @@unique([userId, courseId]) // A user can only enroll in the same course once
+  @@unique([userId, courseId]) 
   @@map("enrollments")
 }

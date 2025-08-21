@@ -6,7 +6,7 @@ import { Public } from '../common/decorators';
 export class TestimonialsController {
   constructor(private readonly testimonialsService: TestimonialsService) {}
 
-  @Public() // Make this endpoint accessible to everyone
+  @Public() 
   @Get()
   findAll() {
     return this.testimonialsService.findAll();

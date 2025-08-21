@@ -1,7 +1,5 @@
-/* Imports the shared layout for the main two columns */
 @use '../auth.styles.css';
 
-/* Styles specific to THIS form */
 form {
   width: 100%;
   
@@ -11,7 +9,7 @@ form {
   margin-bottom: 1rem;
   
   width: 100%;
-  text-align: left; /* Aligns labels and text to the left */
+  text-align: left; 
 }
 
 .form-row {

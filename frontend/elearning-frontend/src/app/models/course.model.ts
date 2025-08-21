@@ -18,5 +18,6 @@ export interface Course {
   image?: string;
   oldPrice?: number;
   badge?: string;
+  totalDuration?: number;
   categories?: Category[];
 }

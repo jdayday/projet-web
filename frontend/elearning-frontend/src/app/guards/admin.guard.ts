@@ -11,10 +11,10 @@ export const adminGuard: CanActivateFn = (route, state) => {
     const token = authService.getAccessToken();
     const decodedToken: any = jwtDecode(token!);
     if (decodedToken.role === 'ADMIN') {
-      return true; // User is logged in and is an ADMIN
+      return true; 
     }
   }
 
-  router.navigate(['/courses']); // Redirect non-admins
+  router.navigate(['/home']);
   return false;
 };

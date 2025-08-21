@@ -1,0 +1,60 @@
+.course-list-item {
+  /* This is the key: it turns the container into a flexible row */
+  display: flex; 
+  align-items: flex-start; /* Aligns items to the top */
+  gap: 1.5rem;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 1.5rem 0;
+}
+
+.item-thumbnail img {
+  width: 240px;
+  height: 135px;
+  object-fit: cover;
+  border: 1px solid #dcdcdc;
+}
+
+.item-details {
+  /* This makes the details section take up all available space in the middle */
+  flex-grow: 1; 
+}
+
+.item-title {
+  font-weight: 700;
+  margin: 0;
+}
+
+.item-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item-description {
+  font-size: 0.9rem;
+  color: #333;
+  margin: 0.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.item-author, .item-rating, .item-meta {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  margin-top: 0.5rem;
+}
+
+.item-price {
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #6a6f73;
+  font-weight: 400;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+}

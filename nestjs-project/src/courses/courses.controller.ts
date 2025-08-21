@@ -9,7 +9,6 @@ import { Division } from '@prisma/client';
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
-  // This decorator protects the endpoint, allowing only admins.
   @UseGuards(AdminGuard)
   @Post()
   create(@Body() createCourseDto: CreateCourseDto) {
@@ -24,13 +23,15 @@ export class CoursesController {
     @Query('division') division?: Division,
     @Query('minRating') minRating?: string,
     @Query('maxDuration') maxDuration?: string,
+    @Query('sort') sort?: 'relevant' | 'highestRated' | 'mostReviewed' | 'newest',
+
 
   ) {
     const categoryIdNum = categoryId ? parseInt(categoryId, 10) : undefined;
     const minRatingNum = minRating ? parseFloat(minRating) : undefined;
     const maxDurationNum = maxDuration ? parseInt(maxDuration) : undefined;
 
-    return this.coursesService.findAll(search, categoryIdNum, division,minRatingNum, maxDurationNum);
+    return this.coursesService.findAll(search, categoryIdNum, division,minRatingNum, maxDurationNum, sort);
   }
   @Public()
   @Get('top-rated')
@@ -39,7 +40,7 @@ export class CoursesController {
   }
 
   @Public()
-  @Get(':id') // The :id makes it a URL parameter
+  @Get(':id') 
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.coursesService.findOne(id);
   }

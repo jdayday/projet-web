@@ -20,7 +20,7 @@ export class CheckoutController {
   @Post('webhook')
   async handleWebhook(
     @Headers('stripe-signature') signature: string,
-    @RawBody() rawBody: Buffer, // Use a custom decorator to get the raw body
+    @RawBody() rawBody: Buffer, 
   ) {
     await this.checkoutService.handleStripeEvent(signature, rawBody);
     return { received: true };

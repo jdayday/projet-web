@@ -24,20 +24,22 @@
   </div>
 
   <div class="nav-section nav-center">
-    <div class="search-container">
-      <img src="/assets/icons/search-icon.svg" class="search-icon" alt="Search">
+   <form (ngSubmit)="onSearchSubmit(searchQuery)" #searchForm="ngForm" novalidate>
+      <div class="search-container">
+        <img src="/assets/icons/search-icon.svg" class="search-icon" alt="Search">
+        <input 
+          type="text"
+          name="q"
+          class="search-bar"
+          placeholder="Search for anything..."
+          [(ngModel)]="searchQuery">
+      </div>
+    </form>
 
-      <input 
-        type="text" 
-        class="search-bar" 
-        placeholder="Search for anything..."
-        (input)="onSearch($event)">
-    </div>
+
   </div>
 
   <div class="nav-section nav-right">
-    <a routerLink="/courses" class="nav-link">Courses</a>
-
     <ng-container *ngIf="!(isLoggedIn$ | async)">
       <a routerLink="/login" class="nav-link">Log In</a>
       <a routerLink="/signup" class="nav-button">Sign Up</a>

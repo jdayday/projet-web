@@ -14,6 +14,7 @@ import { DashboardComponent } from './pages/admin/dashboard/dashboard.component'
 import { SignupRoleSelectComponent } from './pages/signup-role-select/signup-role-select.component';
 import { EditUserComponent } from './pages/admin/edit-user/edit-user.component';
 import { HomeComponent } from './components/home/home.component';
+import { SearchResultsComponent } from './pages/search-results/search-results.component';
 
 
 
@@ -62,5 +63,7 @@ export const routes: Routes = [
     canActivate: [adminGuard],
   },
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'search', component: SearchResultsComponent },
+
 
 ];
