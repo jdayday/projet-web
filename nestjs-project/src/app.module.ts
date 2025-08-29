@@ -10,9 +10,13 @@ import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { CategoriesModule } from './categories/categories.module';
+import { ProfileModule } from './profile/profile.module';
+import { HomepageModule } from './homepage/homepage.module';
+import { LessonsController } from './lessons/lessons.controller';
+import { LessonsModule } from './lessons/lessons.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, CoursesModule, CheckoutModule, UserModule, AdminModule, TestimonialsModule, CategoriesModule ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, CoursesModule, CheckoutModule, UserModule, AdminModule, TestimonialsModule, CategoriesModule, ProfileModule, HomepageModule, LessonsModule ],
   providers: [
     {
       provide: APP_GUARD,

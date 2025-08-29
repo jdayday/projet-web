@@ -4,7 +4,7 @@
     <div class="explore-menu-wrapper" 
      (mouseenter)="isExploreMenuOpen = true" 
      (mouseleave)="isExploreMenuOpen = false">
-  
+
   <a class="nav-link explore-link">Explore ▼</a>
   
   <div class="explore-dropdown" *ngIf="isExploreMenuOpen">
@@ -18,8 +18,8 @@
           </a>
         </li>
       </ul>
-    </div>
   </div>
+ </div>
 
   </div>
 
@@ -40,21 +40,71 @@
   </div>
 
   <div class="nav-section nav-right">
+  
     <ng-container *ngIf="!(isLoggedIn$ | async)">
+      <a routerLink="/signup/INSTRUCTOR" class="nav-link">Teach with us</a>
       <a routerLink="/login" class="nav-link">Log In</a>
       <a routerLink="/signup" class="nav-button">Sign Up</a>
     </ng-container>
 
-    <ng-container *ngIf="isLoggedIn$ | async"> 
+    <ng-container *ngIf="isLoggedIn$ | async">
+      
+      <a *ngIf="(userRole$ | async) === 'INSTRUCTOR' || (userRole$ | async) === 'ADMIN'"
+        routerLink="/instructor/courses"
+        class="nav-link">
+        Instructor
+      </a>
+
       <a *ngIf="(userRole$ | async) === 'ADMIN'" routerLink="/admin/create-course" class="nav-link">
         Create Course
       </a>
       <a *ngIf="(userRole$ | async) === 'ADMIN'" routerLink="/admin/users" class="nav-link">
         Manage Users
       </a>
-      <a *ngIf="(userRole$ | async) === 'ADMIN'" routerLink="/admin/dashboard" class="nav-link">Dashboard</a>
+      <a *ngIf="(userRole$ | async) === 'ADMIN'" routerLink="/admin/dashboard" class="nav-link">
+        Dashboard
+      </a>
+      
       <a routerLink="/my-courses" class="nav-link">My Courses</a>
-      <a (click)="logout()" class="nav-link" style="cursor: pointer;">Logout</a>
+     <div class="profile-menu-wrapper" 
+       (mouseenter)="isProfileMenuOpen = true" 
+       (mouseleave)="isProfileMenuOpen = false">
+    
+          <app-avatar *ngIf="currentUser$ | async as user"
+              [avatarUrl]="user.avatarUrl"
+              [firstName]="user.firstName"
+              [lastName]="user.lastName"
+              class="profile-avatar">
+          </app-avatar>
+
+
+        <div class="profile-dropdown" *ngIf="isProfileMenuOpen">
+          <div class="dropdown-header" *ngIf="currentUser$ | async as user">
+            <app-avatar [avatarUrl]="user.avatarUrl"
+                  [firstName]="user.firstName"
+                  [lastName]="user.lastName"
+                  class="dropdown-avatar">
+            </app-avatar>
+            <div class="user-info">
+              <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+              <span>{{ user.email }}</span>
+            </div>
+          </div>
+          <ul class="dropdown-links">
+            <li><a routerLink="/my-courses">My learning</a></li>
+            <li><a routerLink="/cart">My cart</a></li>
+          </ul>
+          <ul class="dropdown-links">
+            <li><a routerLink="/profile">Account settings</a></li>
+            <li><a routerLink="/profile/payment">Payment methods</a></li>
+          </ul>
+          <ul class="dropdown-links">
+            <li><a routerLink="/help">Help and Support</a></li>
+            <li><a (click)="logout()" style="cursor: pointer;">Log out</a></li>
+          </ul>
+        </div>
+      </div>
     </ng-container>
   </div>
+
 </nav>

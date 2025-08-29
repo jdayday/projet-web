@@ -1,0 +1,22 @@
+<div class="settings-page">
+  <header class="settings-header">
+    <h2>Profile & Settings</h2>
+  </header>
+
+  <div class="settings-container">
+    <div class="settings-sidebar">
+      <ul>
+        <li>
+          <a routerLink="edit" routerLinkActive="active-link">Profile</a>
+        </li>
+        <li>
+          <a routerLink="photo" routerLinkActive="active-link">Photo</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="settings-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

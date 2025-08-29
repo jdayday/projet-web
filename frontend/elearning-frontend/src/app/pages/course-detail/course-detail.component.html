@@ -9,7 +9,7 @@
           <span>{{ course.rating }} ({{ course.ratingCount }} ratings)</span>
           <span>12,345 students</span>
         </div>
-        <p class="author">Created by <a [routerLink]="['/instructors', course.author.id]">{{ course.author}}</a></p>
+        <p class="author">Created by <a [routerLink]="['/instructors', course.author.id]">{{ course.author.firstName }} {{ course.author.lastName }}</a></p>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
           <div class="course-includes">
             <h4>This course includes:</h4>
             <ul>
-              <li>{{ course.totalDuration/60 }} hours on-demand video</li>
+              <li>{{ course.totalDuration / 60 | number:'1.0-1' }} hours on-demand video</li>
               <li>Full lifetime access</li>
               <li>Access on mobile and TV</li>
             </ul>

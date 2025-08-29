@@ -1,7 +1,6 @@
 .course-list-item {
-  /* This is the key: it turns the container into a flexible row */
   display: flex; 
-  align-items: flex-start; /* Aligns items to the top */
+  align-items: flex-start; 
   gap: 1.5rem;
   border-bottom: 1px solid #dcdcdc;
   padding: 1.5rem 0;
@@ -15,7 +14,6 @@
 }
 
 .item-details {
-  /* This makes the details section take up all available space in the middle */
   flex-grow: 1; 
 }
 

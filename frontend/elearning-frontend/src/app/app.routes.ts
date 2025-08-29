@@ -15,6 +15,11 @@ import { SignupRoleSelectComponent } from './pages/signup-role-select/signup-rol
 import { EditUserComponent } from './pages/admin/edit-user/edit-user.component';
 import { HomeComponent } from './components/home/home.component';
 import { SearchResultsComponent } from './pages/search-results/search-results.component';
+import { instructorGuard } from './guards/instructor.guard';
+import { DashboardComponent as InstructorDashboardComponent } from './pages/instructor/dashboard/dashboard.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
+import { ProfilePhotoComponent } from './pages/profile-photo/profile-photo.component';
 
 
 
@@ -40,12 +45,12 @@ export const routes: Routes = [
   {
     path: 'admin/courses/:id',
     component: ManageCourseComponent,
-    canActivate: [adminGuard], 
+    canActivate: [instructorGuard], 
   },
   {
     path: 'admin/create-course',
     component: CreateCourseComponent,
-    canActivate: [adminGuard],
+    canActivate: [instructorGuard],
   },
     {
     path: 'admin/users',
@@ -64,6 +69,20 @@ export const routes: Routes = [
   },
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'search', component: SearchResultsComponent },
-
+    {
+    path: 'instructor/courses',
+    component: InstructorDashboardComponent,
+    canActivate: [instructorGuard],
+  },
+   {
+    path: 'profile',
+    component: ProfileSettingsComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: '', redirectTo: 'edit', pathMatch: 'full' }, 
+      { path: 'edit', component: ProfileComponent },
+      { path: 'photo', component: ProfilePhotoComponent }
+    ]
+  }
 
 ];

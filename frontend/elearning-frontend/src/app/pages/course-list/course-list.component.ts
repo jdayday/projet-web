@@ -10,18 +10,18 @@ import { CourseService } from '../../services/course.service';
 import { Course } from '../../models/course.model';
 
 // Reusable Components
-import { TopCoursesComponent } from '../../components/home/top-courses/top-courses.component';
 import { CourseGridCardComponent } from '../../components/course-grid-card/course-grid-card.component';
+import { CourseCarouselComponent } from "../../components/course-carousel/course-carousel.component";
 
 @Component({
   selector: 'app-course-list',
   standalone: true,
   imports: [
     CommonModule,
-    TopCoursesComponent,
     ReactiveFormsModule,
     CourseGridCardComponent,
-  ],
+    CourseCarouselComponent
+],
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.scss'],
 })

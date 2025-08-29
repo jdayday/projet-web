@@ -11,6 +11,13 @@
           <input type="checkbox" [checked]="lesson.completed" (click)="toggleLessonCompletion(lesson); $event.stopPropagation();">
           {{ lesson.title }}
         </li>
+        <li *ngFor="let lesson of chapter.lessons">
+          <span>{{ lesson.title }}</span>
+          
+          <button (click)="markAsComplete(lesson.id)">
+            Mark as Complete
+          </button>
+        </li>
       </ul>
     </div>
   </div>

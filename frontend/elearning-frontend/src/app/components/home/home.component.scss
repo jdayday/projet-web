@@ -22,3 +22,123 @@ p {
   color: #6a6f73;
   margin-top: 0;
 }
+
+/* ================================ */
+/* ===== LOGGED-IN VIEW STYLES ==== */
+/* ================================ */
+
+.welcome-banner-v2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: #f7f7f9; // A light, clean background
+  border-radius: 12px;
+  padding: 3rem;
+  margin: 3rem;
+  margin-top: 2rem;
+  overflow: hidden;
+  //image
+  background-image: url('/assets/images/hero-student.png');
+  background-repeat: no-repeat;
+  background-size: contain; 
+  background-position: right 40px center; 
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+}
+
+.welcome-banner-v2:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+
+.banner-text-content {
+  max-width: 50%;
+  padding-left: 3.5rem;
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #1c1d1f;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #6a6f73;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.banner-search-form {
+  display: flex;
+  height: 50px;
+  border: 1px solid #1c1d1f;
+  border-radius: 50px;
+  background-color: white;
+
+  .banner-search-bar {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    background: transparent;
+  }
+
+  .search-button {
+    border: none;
+    background-color: #363c4b;
+    color: white;
+    padding: 0 2rem;
+    border-radius: 0 50px 50px 0;
+    cursor: pointer;
+    font-weight: bold;
+
+    transition: background-color 0.3s ease;
+
+  }
+  .search-button:hover {
+  background-color: #1e1f20;
+}
+}
+
+.banner-illustration {
+  flex-basis: 40%;
+  text-align: right;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.homepage-section {
+  margin-bottom: 4rem;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+  }
+  
+  .course-grid {
+    display: grid;
+    // This creates 4 equal columns
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 1.5rem; // A slightly smaller gap can also help
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+
+

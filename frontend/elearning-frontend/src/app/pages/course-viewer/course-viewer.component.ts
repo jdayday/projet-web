@@ -86,4 +86,17 @@ export class CourseViewerComponent implements OnInit {
   isLastLesson(): boolean {
     return this.currentLessonIndex === this.lessons.length - 1;
   }
+
+  markAsComplete(lessonId: number): void {
+  this.courseService.markLessonAsComplete(lessonId).subscribe({
+    next: (response) => {
+      // You can update the UI here to show a checkmark next to the lesson
+      console.log(`Progress is now ${response.progress * 100}%`);
+      // Optionally, find the lesson in the local `course` object and mark it as complete
+    },
+    error: (err) => console.error('Failed to mark lesson as complete', err)
+  });
+
+ }
+ 
 }

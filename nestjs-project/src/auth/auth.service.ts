@@ -27,12 +27,14 @@ export class AuthService {
           firstName: dto.firstName,
           lastName: dto.lastName,
           phone: dto.phone,          
-          dateOfBirth: dto.dateOfBirth, 
+          dateOfBirth: dto.dateOfBirth ? new Date(dto.dateOfBirth) : null, 
           state: dto.state,            
           division: dto.division,     
-          role: dto.role === 'PARENT' ? 'PARENT' : 'STUDENT', 
- 
-
+          role: dto.role === 'PARENT'
+           ? 'PARENT'
+            : dto.role === 'INSTRUCTOR' 
+            ? 'INSTRUCTOR'
+            : 'STUDENT',
         },
       })
       .catch((error) => {
@@ -44,7 +46,7 @@ export class AuthService {
         throw error;
       });
 
-    const tokens = await this.getTokens(user.id, user.email, user.firstName, user.lastName,user.role);
+    const tokens = await this.getTokens(user.id, user.email, user.firstName, user.lastName,user.role,user.avatarUrl);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
     return tokens;
@@ -62,7 +64,7 @@ export class AuthService {
     const passwordMatches = await argon.verify(user.hash, dto.password);
     if (!passwordMatches) throw new ForbiddenException('Access Denied');
 
-    const tokens = await this.getTokens(user.id, user.email, user.firstName, user.lastName, user.role);
+    const tokens = await this.getTokens(user.id, user.email, user.firstName, user.lastName, user.role,user.avatarUrl);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
     return tokens;
@@ -118,6 +120,7 @@ export class AuthService {
     firstName: string,
     lastName: string,
     role: string,
+    avatarUrl?: string,
   ): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: userId,
@@ -125,6 +128,7 @@ export class AuthService {
       firstName: firstName,
       lastName: lastName,
       role: role,
+      avatarUrl: avatarUrl,
     };
 
     const [at, rt] = await Promise.all([
@@ -142,5 +146,26 @@ export class AuthService {
       access_token: at,
       refresh_token: rt,
     };
+  }
+
+    async refreshAccessToken(userId: number): Promise<{ access_token: string }> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new ForbiddenException('Access Denied');
+
+    const jwtPayload: JwtPayload = {
+      sub: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      avatarUrl: user.avatarUrl,
+    };
+
+    const at = await this.jwtService.signAsync(jwtPayload, {
+      secret: this.config.get<string>('AT_SECRET'),
+      expiresIn: '15m',
+    });
+
+    return { access_token: at };
   }
 }

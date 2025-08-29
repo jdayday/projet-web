@@ -2,20 +2,49 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { Division, Prisma } from '@prisma/client'; 
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CoursesService {
   constructor(private prisma: PrismaService) {}
 
-  create(createCourseDto: CreateCourseDto) {
+  create(createCourseDto: CreateCourseDto, userId: number) {
     return this.prisma.course.create({
-      data: createCourseDto,
+      data: {
+    ...createCourseDto,
+    authorId: userId,
+  },
+
     });
   }
 
-    async findOne(id: number) {
+  async findCoursesByInstructor(userId: number) {
+    return this.prisma.course.findMany({
+      where: { authorId: userId },
+      include: {
+        categories: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
+
+  async findOne(id: number) {
     const course = await this.prisma.course.findUnique({
       where: { id: id },
+      include: {
+        author: true,
+        categories: true,
+        chapters: {
+          orderBy: { order: 'asc' }, 
+          include: {
+            lessons: {
+              orderBy: { order: 'asc' },
+            },
+          },
+        },
+      },
     });
 
     if (!course) {
@@ -42,39 +71,34 @@ export class CoursesService {
     });
   }
 
-async getCourseContent(userId: number, courseId: number) {
-  const user = await this.prisma.user.findUnique({ where: { id: userId } });
-  const enrollment = await this.prisma.enrollment.findUnique({
-    where: {
-      userId_courseId: {
-        userId: userId,
-        courseId: courseId,
-      },
-    },
-  });
+  async getCourseContent(userId: number, courseId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const course = await this.prisma.course.findUnique({ where: { id: courseId } });
 
-  if (user.role !== 'ADMIN' && !enrollment) {
-    throw new ForbiddenException('You are not enrolled in this course');
+    if (!user || !course) {
+      throw new NotFoundException('User or course not found');
+    }
+
+    const enrollment = await this.prisma.enrollment.findUnique({
+      where: {
+        userId_courseId: { userId: userId, courseId: courseId },
+      },
+    });
+
+    if (user.role !== 'ADMIN' && course.authorId !== userId && !enrollment) {
+      throw new ForbiddenException('You do not have permission to view this content');
+    }
+
+    return this.prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        chapters: {
+          orderBy: { order: 'asc' },
+          include: { lessons: { orderBy: { order: 'asc' } } },
+        },
+      },
+    });
   }
-
-  return this.prisma.course.findUnique({
-    where: { id: courseId },
-    include: {
-      chapters: {
-        orderBy: {
-          order: 'asc',
-        },
-        include: {
-          lessons: {
-            orderBy: {
-              order: 'asc',
-            },
-          },
-        },
-      },
-    },
-  });
- }
 
   addChapter(courseId: number, data: { title: string; order: number }) {
     return this.prisma.chapter.create({
@@ -148,7 +172,9 @@ async getCourseContent(userId: number, courseId: number) {
     return this.prisma.course.findMany({ 
       where,
       orderBy,
-      include: { categories: true } });
+      include: { categories: true,
+         author: true, 
+       } });
   }
 
 findTopRated(division?: Division) {
@@ -168,5 +194,22 @@ findTopRated(division?: Division) {
         },
     });
  }
+   async update(courseId: number, dto: UpdateCourseDto, userId: number, userRole: string) {
+    const course = await this.prisma.course.findUnique({
+      where: { id: courseId },
+    });
 
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+
+    if (userRole !== 'ADMIN' && course.authorId !== userId) {
+      throw new ForbiddenException('You do not have permission to edit this course');
+    }
+
+    return this.prisma.course.update({
+      where: { id: courseId },
+      data: { ...dto },
+    });
+  }
 }

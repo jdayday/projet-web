@@ -7,7 +7,9 @@
   <div class="item-details">
     <h3 class="item-title"><a [routerLink]="['/courses', course.id]">{{ course.title }}</a></h3>
     <p class="item-description">{{ course.description }}</p>
-    <p class="item-author">{{ course.author }}</p>
+    <p class="course-author" *ngIf="course.author">
+      {{ course.author.firstName }} {{ course.author.lastName }}
+    </p>
     <div class="item-rating">
       <span class="rating-number">{{ course.rating }}</span>
       <span class="stars">★★★★★</span>

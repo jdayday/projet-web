@@ -1,22 +1,5 @@
-export enum Division {
-  BASE_7 = 'BASE_7',
-  BASE_8 = 'BASE_8',
-  BASE_9 = 'BASE_9',
-  SECONDAIRE_1 = 'SECONDAIRE_1',
-  SECONDAIRE_2 = 'SECONDAIRE_2',
-  SECONDAIRE_3 = 'SECONDAIRE_3',
-  BAC_INFO = 'BAC_INFO',
-  BAC_MATH = 'BAC_MATH',
-  BAC_SCIENCE = 'BAC_SCIENCE',
-  BAC_SPORT = 'BAC_SPORT',
-  CONCOURS = 'CONCOURS',
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  division: Division;
-}
+import { User } from './user.model';
+import { Testimonial } from './testimonial.model';
 
 export interface Lesson {
   id: number;
@@ -33,21 +16,29 @@ export interface Chapter {
   lessons: Lesson[];
 }
 
+export interface Category {
+  id: number;
+  name: string;
+}
+
 export interface Course {
   id: number;
-  createdAt: string;
-  updatedAt: string;
   title: string;
   description?: string;
   price?: number;
-  author?: string;
   image?: string;
   oldPrice?: number;
   badge?: string;
   totalDuration?: number;
-  division: Division;
+  division: string; 
   rating?: number;
   ratingCount: number;
-  categories?: Category[];
-  chapters?: Chapter[];
+  createdAt: Date;
+  updatedAt: Date;
+
+  // Relational fields
+  author?: User;
+  categories: Category[]; 
+  chapters: Chapter[]; 
+  testimonials?: Testimonial[]; 
 }

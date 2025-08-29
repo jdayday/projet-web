@@ -4,4 +4,5 @@ export type JwtPayload = {
   firstName: string;
   lastName: string;
   role: string;
+  avatarUrl?: string;
 };

@@ -1,15 +1,63 @@
-<app-hero-section></app-hero-section>
-<app-promo-video></app-promo-video>
+<div *ngIf="isLoggedIn$ | async; else loggedOutView">
+  
+  <ng-container *ngIf="homepageData$ | async as data">
+    
+  <div class="welcome-banner-v2">
+    <div class="banner-text-content">
+      <h1>Welcome back, {{ data.user.firstName }}!</h1>
+      <p>What will you learn today?</p>
 
-<div class="course-showcase-section">
-  <div class="container">
-    <div class="filter-wrapper">
-      <h1>All the Courses you need in one place</h1>
-      <p>From school subjects to exam prep—discover courses made for your success</p>
-      
-      <app-course-filter (filtersChanged)="onFiltersChanged($event)"></app-course-filter>
-    </div>    
-    <app-top-courses [courses]="filteredCourses"></app-top-courses>
+      <form class="banner-search-form" (ngSubmit)="onSearchSubmit(searchQuery)">
+        <input 
+          type="text" 
+          name="q"
+          class="banner-search-bar" 
+          placeholder="Search for your favorite course..."
+          [(ngModel)]="searchQuery">
+        <button type="submit" class="search-button">Search</button>
+      </form>
+    </div>
   </div>
+  <div class="container">
+    <div class="homepage-section" *ngIf="data.continueLearning?.length > 0">
+      <h2>Continue Learning</h2>
+      <div class="course-grid">
+        <app-course-card 
+          *ngFor="let enrollment of data.continueLearning" 
+          [course]="enrollment.course"
+          [progress]="enrollment.progress"> </app-course-card>
+      </div>
+    </div>
+      <app-course-carousel 
+    *ngIf="data.recommendations?.length > 0"
+    title="Recommended For You"
+    [courses]="data.recommendations">
+  </app-course-carousel>
+
+  <app-course-carousel
+    *ngIf="data.topCoursesInDivision?.length > 0"
+    [title]="'Top Courses in ' + data.user.division.replace('_', ' ')"
+    [courses]="data.topCoursesInDivision">
+  </app-course-carousel>
+
+  </div>
+  </ng-container>
 </div>
-<app-testimonials></app-testimonials>
+
+<ng-template #loggedOutView>
+  <app-hero-section></app-hero-section>
+  <app-promo-video></app-promo-video>
+
+  <div class="course-showcase-section">
+    <div class="container">
+      <div class="filter-wrapper">
+        <h1>All the Courses you need in one place</h1>
+        <p>From school subjects to exam prep—discover courses made for your success</p>
+        
+        <app-course-filter (filtersChanged)="onFiltersChanged($event)"></app-course-filter>
+      </div>      
+      <app-course-carousel [courses]="filteredCourses"></app-course-carousel>
+    </div>
+  </div>
+  <app-testimonials></app-testimonials>
+</ng-template>

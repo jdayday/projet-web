@@ -2,7 +2,9 @@
   <div class="card-thumbnail" [style.backgroundImage]="'url(' + course.image + ')'"></div>
   <div class="card-content">
     <h3 class="course-title">{{ course.title }}</h3>
-    <p class="course-author">{{ course.author }}</p>
+    <p class="course-author" *ngIf="course.author">
+      {{ course.author.firstName }} {{ course.author.lastName }}
+    </p>
     <div class="course-rating">
       <span class="rating-number">{{ course.rating }}</span>
       <span class="stars">★★★★★</span>
@@ -14,6 +16,9 @@
         <span class="old-price" *ngIf="course.oldPrice">${{ course.oldPrice }}</span>
       </div>
       <div class="course-badge" *ngIf="course.badge">{{ course.badge }}</div>
+    </div>
+      <div *ngIf="progress && progress > 0" class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="progress * 100"></div>
     </div>
   </div>
 </a>

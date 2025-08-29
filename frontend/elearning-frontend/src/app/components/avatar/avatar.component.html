@@ -1,0 +1,5 @@
+<img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profile Avatar" class="avatar-image">
+
+<div *ngIf="!avatarUrl" class="avatar-initials">
+  <span>{{ initials }}</span>
+</div>

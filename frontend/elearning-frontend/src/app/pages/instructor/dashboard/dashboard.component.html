@@ -1,0 +1,39 @@
+<div class="instructor-container">
+  <header class="instructor-header">
+    <h1>Courses</h1>
+    <a routerLink="/admin/create-course" class="new-course-btn">New course</a>
+  </header>
+
+  <div class="courses-list">
+    <table class="courses-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <td>
+            <img [src]="course.image || 'assets/images/default-course-image.jpg'" alt="{{ course.title }}" class="course-thumbnail">
+          </td>
+          <td>{{ course.title }}</td>
+          <td>{{ course.price | currency }}</td>
+          <td>{{ course.createdAt | date:'mediumDate' }}</td>
+          <td>
+            <a [routerLink]="['/admin/courses', course.id]" class="action-link">Edit</a>
+          </td>
+        </tr>
+        <tr *ngIf="!isLoading && courses.length === 0">
+          <td colspan="5" class="no-courses">You haven't created any courses yet.</td>
+        </tr>
+         <tr *ngIf="isLoading">
+          <td colspan="5" class="loading">Loading courses...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -13,4 +13,5 @@ import { AuthService } from '../../services/auth.service';
 })
 export class CourseCardComponent {
   @Input() course!: Course;
+  @Input() progress: number | undefined;
 }

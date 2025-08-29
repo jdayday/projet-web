@@ -1,0 +1,20 @@
+<div class="profile-card">
+  <h3>Edit Your Photo</h3>
+  <hr>
+  <div class="photo-content" *ngIf="currentUser$ | async as user">
+    <div class="avatar-preview">
+      <p><strong>Image Preview</strong></p>
+      <app-avatar 
+        [avatarUrl]="user.avatarUrl" 
+        [firstName]="user.firstName" 
+        [lastName]="user.lastName">
+      </app-avatar>
+    </div>
+    <div class="upload-instructions">
+      <p>Upload a new photo to represent you on the platform.</p>
+      <input type="file" (change)="onFileSelected($event)" #fileUpload style="display: none;">
+      <button class="upload-btn" (click)="fileUpload.click()">Upload Photo</button>
+      <div *ngIf="successMessage" class="success-alert">{{ successMessage }}</div>
+    </div>
+  </div>
+</div>

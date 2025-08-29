@@ -1,0 +1,54 @@
+.settings-page {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.settings-header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1.5rem;
+}
+
+.settings-container {
+  display: flex;
+  gap: 3rem; // Increased gap for more space
+}
+
+.settings-sidebar {
+  flex: 0 0 220px; // Slightly wider sidebar
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li a {
+      display: flex; // Use flex for icon alignment later
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.8rem 1rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      transition: background-color 0.2s, color 0.2s;
+
+      &:hover {
+        background-color: #f7f7f9;
+      }
+    }
+
+    .active-link {
+      background-color: #f7f7f9;
+      color: #a435f0;
+    }
+  }
+}
+
+.settings-content {
+  flex-grow: 1;
+}

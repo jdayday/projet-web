@@ -13,6 +13,7 @@ enum Role {
   STUDENT
   ADMIN
   PARENT 
+  INSTRUCTOR
 }
 
 model User {
@@ -26,7 +27,7 @@ model User {
   
   firstName   String?
   lastName    String?
-  headline    String? // e.g., "Full-Stack Web Developer"
+  headline    String? 
   bio         String?
   avatarUrl   String?
 
@@ -40,6 +41,8 @@ model User {
 
   role Role @default(STUDENT)
   enrollments Enrollment[]
+  lessonCompletions LessonCompletion[]
+
   @@map("users")
 }
 
@@ -140,6 +143,8 @@ model Lesson {
   resourceUrl String? // For downloadable files
   chapterId   Int
   chapter     Chapter @relation(fields: [chapterId], references: [id])
+  completions LessonCompletion[]
+
 
   @@map("lessons")
 }
@@ -148,6 +153,8 @@ model Lesson {
 model Enrollment {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
+  progress  Float    @default(0)
+
 
   userId    Int
   courseId  Int
@@ -157,4 +164,18 @@ model Enrollment {
 
   @@unique([userId, courseId]) // A user can only enroll in the same course once
   @@map("enrollments")
+}
+
+model LessonCompletion {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  userId    Int
+  lessonId  Int
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("lesson_completions")
 }

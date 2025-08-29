@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { AuthService } from './auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CourseService {
@@ -93,6 +93,12 @@ export class CourseService {
     let params = new HttpParams();
     if (division) params = params.append('division', division);
     return this.http.get<Course[]>(`${this.apiUrl}/courses/top-rated`, { params });
-}
- 
+ }
+ getMyCreatedCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}/courses/my-creations`);
+  }
+
+  markLessonAsComplete(lessonId: number): Observable<{ progress: number }> {
+  return this.http.post<{ progress: number }>(`${this.apiUrl}/lessons/${lessonId}/complete`, {});
+ } 
 }

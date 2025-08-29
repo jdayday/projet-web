@@ -1,18 +1,46 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, UseGuards, Query  } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, UseGuards, Query, Patch  } from '@nestjs/common';
 import { AdminGuard } from '../common/guards/admin.guard';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { GetCurrentUserId, Public } from '../common/decorators';
+import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { Division } from '@prisma/client';
+import { InstructorGuard } from 'src/common/guards/instructor.guard';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
-  @UseGuards(AdminGuard)
+/* @UseGuards(AdminGuard)
   @Post()
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
+  }*/
+
+@UseGuards(InstructorGuard)
+  @Post()
+  create(
+    @Body() createCourseDto: CreateCourseDto,
+    @GetCurrentUserId() userId: number,
+  ) {
+    return this.coursesService.create(createCourseDto, userId);
+  }
+
+  @UseGuards(InstructorGuard)
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) courseId: number,
+    @Body() updateCourseDto: UpdateCourseDto,
+    @GetCurrentUserId() userId: number,
+    @GetCurrentUser('role') userRole: string,  
+  ) {
+    return this.coursesService.update(courseId, updateCourseDto, userId, userRole);
+  }
+
+  @UseGuards(InstructorGuard) 
+  @Get('my-creations')
+  findMyCreatedCourses(@GetCurrentUserId() userId: number) {
+    return this.coursesService.findCoursesByInstructor(userId);
   }
 
 @Public()
@@ -77,7 +105,7 @@ findAll(
   }
 
 
-  @UseGuards(AdminGuard)
+  @UseGuards(InstructorGuard) 
   @Post(':courseId/chapters')
   addChapter(
     @Param('courseId', ParseIntPipe) courseId: number,
@@ -86,7 +114,7 @@ findAll(
     return this.coursesService.addChapter(courseId, data);
   }
 
-  @UseGuards(AdminGuard)
+  @UseGuards(InstructorGuard) 
   @Post('chapters/:chapterId/lessons')
   addLesson(
     @Param('chapterId', ParseIntPipe) chapterId: number,
@@ -94,5 +122,5 @@ findAll(
   ) {
     return this.coursesService.addLesson(chapterId, data);
   }
-
+  
 }

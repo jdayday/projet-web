@@ -69,9 +69,19 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.invalid) {
       return;
     }
-    const formData = { ...this.signupForm.value, role: this.role };
+    const signupData = {
+      firstName: this.signupForm.value.firstName,
+      lastName: this.signupForm.value.lastName,
+      email: this.signupForm.value.email,
+      phone: this.signupForm.value.phone,
+      dateOfBirth: this.signupForm.value.dateOfBirth,
+      password: this.signupForm.value.password,
+      state: this.signupForm.value.state,
+      division: this.signupForm.value.division,
+      role: this.signupForm.value.role 
+    };
 
-    this.authService.signup(formData).subscribe({
+    this.authService.signup(signupData).subscribe({
       next: () => {
         this.router.navigate(['/courses']);
       },

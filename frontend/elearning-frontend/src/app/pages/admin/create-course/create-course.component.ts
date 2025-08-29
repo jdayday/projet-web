@@ -31,7 +31,6 @@ export class CreateCourseComponent {
       return;
     }
     this.courseService.createCourse(this.courseForm.value).subscribe(() => {
-      // Navigate to the main courses page after creation
       this.router.navigate(['/courses']);
     });
   }
