@@ -1,0 +1,5 @@
+<div class="star-rating-container">
+  <ng-container *ngFor="let starType of stars">
+    <i *ngIf="starType === 'full'" class="fas fa-star"></i>
+    <i *ngIf="starType === 'half'" class="fas fa-star-half-alt"></i> <i *ngIf="starType === 'empty'" class="far fa-star"></i> </ng-container>
+</div>

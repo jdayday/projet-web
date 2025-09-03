@@ -101,4 +101,9 @@ export class CourseService {
   markLessonAsComplete(lessonId: number): Observable<{ progress: number }> {
   return this.http.post<{ progress: number }>(`${this.apiUrl}/lessons/${lessonId}/complete`, {});
  } 
+
+   checkEnrollment(courseId: number): Observable<{ isEnrolled: boolean }> {
+    return this.http.get<{ isEnrolled: boolean }>(`${this.apiUrl}/courses/${courseId}/enrollment-status`);
+  }
+
 }

@@ -42,6 +42,7 @@ model User {
   role Role @default(STUDENT)
   enrollments Enrollment[]
   lessonCompletions LessonCompletion[]
+   ratings Rating[]
 
   @@map("users")
 }
@@ -63,7 +64,9 @@ enum Division {
 model Category {
   id      Int      @id @default(autoincrement())
   name    String   
+  imageUrl String?  
   courses Course[]
+  
 
   division  Division @default(BAC_INFO)
   @@unique([name, division])
@@ -105,6 +108,7 @@ model Course {
   enrollments Enrollment[]
 
   testimonials Testimonial[]
+   ratings Rating[]
 
   @@map("courses")
 }
@@ -162,7 +166,7 @@ model Enrollment {
   user      User     @relation(fields: [userId], references: [id])
   course    Course   @relation(fields: [courseId], references: [id])
 
-  @@unique([userId, courseId]) // A user can only enroll in the same course once
+  @@unique([userId, courseId])
   @@map("enrollments")
 }
 
@@ -179,3 +183,19 @@ model LessonCompletion {
   @@unique([userId, lessonId])
   @@map("lesson_completions")
 }
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  value     Int      // The star value, e.g., 1, 2, 3, 4, or 5
+  createdAt DateTime @default(now())
+
+  userId    Int
+  courseId  Int
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId]) // A user can only rate a course once
+  @@map("ratings")
+}
+

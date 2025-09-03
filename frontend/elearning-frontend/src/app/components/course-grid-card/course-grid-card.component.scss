@@ -37,7 +37,7 @@
   overflow: hidden;
 }
 
-.item-author, .item-rating, .item-meta {
+.item-author, .item-meta {
   font-size: 0.85rem;
   color: #6a6f73;
   margin-top: 0.5rem;
@@ -55,4 +55,14 @@
   font-weight: 400;
   font-size: 1rem;
   margin-left: 0.5rem;
+}
+
+.course-rating {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0;
+  color: #6a6f73;
 }

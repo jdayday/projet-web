@@ -3,11 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { RateCourseComponent } from '../../components/rate-course/rate-course.component';
+import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-viewer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RateCourseComponent],
   templateUrl: './course-viewer.component.html',
   styleUrls: ['./course-viewer.component.scss']
 })
@@ -17,21 +19,45 @@ export class CourseViewerComponent implements OnInit {
   safeVideoUrl: SafeResourceUrl | null = null;
   private currentLessonIndex = -1;
   private lessons: any[] = [];
+  course: Course | null = null;
+  courseId: number | null = null;
+  isLoading = true;
+  isEnrolled = false;
 
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+        this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+  }
 
   ngOnInit(): void {
-    const courseId = Number(this.route.snapshot.paramMap.get('courseId'));
-    if (courseId) {
-      this.courseService.getCourseContent(courseId).subscribe(data => {
-        this.courseContent = data;
-        this.initializeLessons();
-        if (this.lessons.length > 0) {
-          this.selectLesson(this.lessons[0]);
+
+    if (this.courseId) {
+      this.courseService.getCourseContent(this.courseId).subscribe({
+        next: (data) => {
+          this.courseContent = data;
+          this.initializeLessons();
+          if (this.lessons.length > 0) {
+            this.selectLesson(this.lessons[0]);
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Failed to load course content', err);
+          this.isLoading = false;
+        }
+      });
+
+      this.courseService.checkEnrollment(this.courseId).subscribe({
+        next: (response) => {
+          this.isEnrolled = response.isEnrolled;
+          console.log('Enrollment status:', this.isEnrolled);
+        },
+        error: (err) => {
+          console.error('Failed to check enrollment status', err);
+          this.isEnrolled = false; 
         }
       });
     }
@@ -90,13 +116,18 @@ export class CourseViewerComponent implements OnInit {
   markAsComplete(lessonId: number): void {
   this.courseService.markLessonAsComplete(lessonId).subscribe({
     next: (response) => {
-      // You can update the UI here to show a checkmark next to the lesson
       console.log(`Progress is now ${response.progress * 100}%`);
-      // Optionally, find the lesson in the local `course` object and mark it as complete
     },
     error: (err) => console.error('Failed to mark lesson as complete', err)
   });
 
  }
- 
+
+   onRatingSubmitted(updatedCourse: Course): void {
+    if (this.courseContent) {
+      this.courseContent.rating = updatedCourse.rating;
+      this.courseContent.ratingCount = updatedCourse.ratingCount;
+    }
+  }
+
 }

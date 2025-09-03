@@ -1,0 +1,7 @@
+<a [routerLink]="['/courses']" [queryParams]="{ categoryId: category.id }" class="category-card">
+  <div class="card-image" [style.backgroundImage]="'url(' + (category.imageUrl || 'assets/images/default-category.png') + ')'">
+</div>
+  <div class="card-title">
+    <h3>{{ category.name }}</h3>
+  </div>
+</a>

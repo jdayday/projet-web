@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 
 // Import Services
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +10,6 @@ import { CourseService } from '../../services/course.service';
 
 // Import Models
 import { Course } from '../../models/course.model';
-import { User } from '../../models/user.model';
 
 import { TestimonialsComponent } from './testimonials/testimonials.component';
 import { HeroSectionComponent } from './hero-section/hero-section.component';
@@ -19,6 +18,8 @@ import { CourseCardComponent } from '../course-card/course-card.component';
 import { CourseFilterComponent } from '../course-filter/course-filter.component';
 import { FormsModule } from '@angular/forms';
 import { CourseCarouselComponent } from '../course-carousel/course-carousel.component';
+import { CategoryCardComponent } from '../category-card/category-card.component';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ import { CourseCarouselComponent } from '../course-carousel/course-carousel.comp
     CourseFilterComponent,
     FormsModule, 
     CourseCarouselComponent,
+    CategoryCardComponent, 
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -43,23 +45,35 @@ export class HomeComponent implements OnInit {
 
   filteredCourses: Course[] = [];
   searchQuery = '';
+  topCategories$: Observable<any[]> ;
 
   constructor(
     private authService: AuthService,
     private homepageService: HomepageService,
     private courseService: CourseService,
     private router: Router ,
+    private categoryService: CategoryService ,
   ) {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
+    this.topCategories$ = of([]);
   }
 
   ngOnInit(): void {
     this.isLoggedIn$.subscribe(loggedIn => {
       if (loggedIn) {
         this.homepageData$ = this.homepageService.getPersonalizedHomepage();
-        this.filteredCourses = []; 
+        this.topCategories$ = this.homepageData$.pipe(
+          switchMap(data => {
+            if (data && data.user && data.user.division) {
+              return this.categoryService.getTopCategories(data.user.division);
+            }
+            return of([]); 
+          })
+        );
+        this.filteredCourses = [];
       } else {
         this.homepageData$ = of(null);
+        this.topCategories$ = of([]);;
       }
     });
   }

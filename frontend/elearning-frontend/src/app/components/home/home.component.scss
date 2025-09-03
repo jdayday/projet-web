@@ -128,9 +128,8 @@ p {
   
   .course-grid {
     display: grid;
-    // This creates 4 equal columns
     grid-template-columns: repeat(4, 1fr); 
-    gap: 1.5rem; // A slightly smaller gap can also help
+    gap: 1.5rem;
   }
 }
 
@@ -140,5 +139,9 @@ p {
   padding: 0 1rem;
 }
 
-
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.5rem;
+}
 

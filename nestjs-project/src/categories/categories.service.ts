@@ -17,4 +17,21 @@ export class CategoriesService {
       where: where,
     });
   }
+
+    async findTopCategories(division?: Division) {
+      const where: Prisma.CategoryWhereInput = {};
+      if (division) {
+      where.division = division;
+    }
+    return this.prisma.category.findMany({
+      where,
+      take: 8,
+      orderBy: {
+        courses: {
+          _count: 'desc', 
+        },
+      },
+    });
+  }
+
 }

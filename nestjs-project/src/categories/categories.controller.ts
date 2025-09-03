@@ -12,4 +12,11 @@ export class CategoriesController {
   findAll(@Query('division') division?: Division) {
     return this.categoriesService.findAll(division);
   }
+
+  @Public()
+  @Get('top')
+  findTop(@Query('division') division?: Division) {
+    return this.categoriesService.findTopCategories(division);
+  }
+
 }

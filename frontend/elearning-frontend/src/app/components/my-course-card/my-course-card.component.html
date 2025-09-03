@@ -1,0 +1,20 @@
+<div class="my-course-card" *ngIf="enrollment && enrollment.course as course">
+  <a [routerLink]="['/learn', course.id]" class="card-link">
+    <img [src]="course.image || 'assets/images/default-course-image.jpg'" alt="{{ course.title }}" class="card-image">
+    
+    <div class="card-content">
+      <h3 class="course-title">{{ course.title }}</h3>
+      <p class="course-author" *ngIf="course.author">{{ course.author.firstName }} {{ course.author.lastName }}</p>
+      
+      <div class="progress-bar-container">
+        <div class="progress-bar" [style.width.%]="enrollment.progress * 100"></div>
+      </div>
+      <span class="progress-text">{{ enrollment.progress | percent }} Complete</span>
+    </div>
+  </a>
+
+  <div class="card-actions">
+    <app-star-rating [rating]="course.rating"></app-star-rating>
+    <a [routerLink]="['/courses', course.id]" class="rate-link">Leave a rating</a>
+  </div>
+</div>

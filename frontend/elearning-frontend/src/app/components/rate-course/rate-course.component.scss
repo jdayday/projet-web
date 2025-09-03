@@ -1,0 +1,21 @@
+.rating-container {
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.stars-wrapper {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.star {
+  color: #ccc; /* Default empty star color */
+  transition: color 0.2s;
+}
+
+.star.hovered,
+.star.selected {
+  color: #f5c518; /* Gold color for selected/hovered stars */
+}

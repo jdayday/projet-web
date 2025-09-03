@@ -44,6 +44,7 @@ export class CourseListComponent implements OnInit {
   isDurationFilterOpen = true;
 
   showAllCategories = false;
+  initialCategoryId: number | null = null;
 
   constructor(
     private courseService: CourseService,
@@ -64,6 +65,11 @@ export class CourseListComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
       this.activeDivision = params.get('division');
+      const categoryId = params.get('categoryId');
+      if (categoryId) {
+        this.initialCategoryId = +categoryId;
+      }
+
       this.loadInitialData();
     });
 
@@ -73,7 +79,7 @@ export class CourseListComponent implements OnInit {
   }
 
   loadInitialData(): void {
-    this.activeCategoryId = null;
+    this.activeCategoryId = this.initialCategoryId;
     this.loadFeaturedCourses();
     this.loadAllCourses();
     this.loadCategories();

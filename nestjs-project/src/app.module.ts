@@ -14,9 +14,10 @@ import { ProfileModule } from './profile/profile.module';
 import { HomepageModule } from './homepage/homepage.module';
 import { LessonsController } from './lessons/lessons.controller';
 import { LessonsModule } from './lessons/lessons.module';
+import { RatingsModule } from './ratings/ratings.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, CoursesModule, CheckoutModule, UserModule, AdminModule, TestimonialsModule, CategoriesModule, ProfileModule, HomepageModule, LessonsModule ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, PrismaModule, CoursesModule, CheckoutModule, UserModule, AdminModule, TestimonialsModule, CategoriesModule, ProfileModule, HomepageModule, LessonsModule, RatingsModule ],
   providers: [
     {
       provide: APP_GUARD,

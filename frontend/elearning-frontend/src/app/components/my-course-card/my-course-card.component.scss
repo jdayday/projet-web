@@ -1,0 +1,81 @@
+:host {
+  display: block;
+}
+
+.my-course-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.course-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0 0 0.25rem 0;
+}
+
+.course-author {
+  font-size: 0.85rem;
+  color: #6a6f73;
+  margin-bottom: 1rem;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #a435f0;
+  height: 100%;
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  color: #6a6f73;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.card-actions {
+  border-top: 1px solid #e0e0e0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  .rate-link {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #a435f0;
+    text-decoration: none;
+  }
+}

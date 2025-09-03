@@ -123,4 +123,12 @@ findAll(
     return this.coursesService.addLesson(chapterId, data);
   }
   
+  @Get(':id/enrollment-status')
+  checkEnrollmentStatus(
+    @GetCurrentUserId() userId: number,
+    @Param('id', ParseIntPipe) courseId: number,
+  ) {
+    return this.coursesService.checkEnrollmentStatus(userId, courseId);
+  }
+
 }

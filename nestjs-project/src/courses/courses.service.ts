@@ -212,4 +212,14 @@ findTopRated(division?: Division) {
       data: { ...dto },
     });
   }
+
+  async checkEnrollmentStatus(userId: number, courseId: number) {
+    const enrollment = await this.prisma.enrollment.findUnique({
+      where: {
+        userId_courseId: { userId, courseId },
+      },
+    });
+    return { isEnrolled: !!enrollment };
+  }
+
 }

@@ -10,10 +10,12 @@
     <p class="course-author" *ngIf="course.author">
       {{ course.author.firstName }} {{ course.author.lastName }}
     </p>
-    <div class="item-rating">
-      <span class="rating-number">{{ course.rating }}</span>
-      <span class="stars">★★★★★</span>
-      <span class="rating-count">({{ course.ratingCount }})</span>
+     <div class="course-rating" *ngIf="course.rating">
+      <span class="rating-number">{{ course.rating | number:'1.1-1' }}</span>
+      
+      <app-star-rating [rating]="course.rating"></app-star-rating>
+      
+      <span class="rating-count">({{ course.ratingCount | number }})</span>
     </div>
     <div class="item-meta" *ngIf="course.totalDuration">
       <span>{{ course.totalDuration / 60 | number:'1.0-1' }} total hours</span>
