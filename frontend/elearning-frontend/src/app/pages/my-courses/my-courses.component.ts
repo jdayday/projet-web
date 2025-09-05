@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MyCourseCardComponent } from '../../components/my-course-card/my-course-card.component';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-my-courses',
@@ -16,9 +17,19 @@ export class MyCoursesComponent implements OnInit {
     isLoading = true;
 
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+    private route: ActivatedRoute,
+    private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe(params => {
+    if (params['payment'] === 'success') {
+      this.cartService.clearCart();
+    }
+  });
+
     this.authService.getMyCourses().subscribe({
       next: (data) => {
         this.myEnrollments = data;

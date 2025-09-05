@@ -24,18 +24,27 @@ export class CheckoutService {
       throw new NotFoundException('One or more courses in your cart could not be found.');
     }
     
+    const baseUrl = 'https://de90813f86e1.ngrok-free.app'; 
 
-    const line_items = courses.map(course => ({
-      price_data: {
+    const line_items = courses.map(course => {
+      let imagePath: string | undefined;
+      if (course.image) {
+      imagePath = course.image.replace(/^https?:\/\/localhost:\d+/, '');
+      imagePath = `${baseUrl}${imagePath}`;
+    }
+
+      return {
+        price_data: {
         currency: 'usd',
         product_data: {
           name: course.title,
-          images: course.image ? [`https://de90813f86e1.ngrok-free.app/${course.image}`] : [],
+          images: imagePath ? [imagePath] : [],
         },
         unit_amount: Math.round(course.price * 100), 
       },
       quantity: 1,
-    }));
+    }
+    });
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',

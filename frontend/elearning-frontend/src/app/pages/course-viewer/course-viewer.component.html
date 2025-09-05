@@ -45,13 +45,13 @@
         <button (click)="previousLesson()" [disabled]="isFirstLesson()">Previous</button>
         <button (click)="nextLesson()" [disabled]="isLastLesson()">Next</button>
       </div>
-     <!-- <div class="main-content" *ngIf="courseId">
-        <app-rate-course 
+     <!-- <app-rate-course 
           *ngIf="isEnrolled"
           [courseId]="courseId" 
           (ratingSubmitted)="onRatingSubmitted($event)">
         </app-rate-course>
-      </div>--> 
+      </div> -->
+
     </div>
     <ng-template #noLessonSelected>
       <div class="welcome-message">
