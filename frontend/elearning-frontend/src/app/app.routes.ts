@@ -20,6 +20,7 @@ import { DashboardComponent as InstructorDashboardComponent } from './pages/inst
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ProfileSettingsComponent } from './pages/profile-settings/profile-settings.component';
 import { ProfilePhotoComponent } from './pages/profile-photo/profile-photo.component';
+import { CartComponent } from './pages/cart/cart.component';
 
 
 
@@ -83,6 +84,9 @@ export const routes: Routes = [
       { path: 'edit', component: ProfileComponent },
       { path: 'photo', component: ProfilePhotoComponent }
     ]
-  }
+  },
+  { path: 'cart', component: CartComponent },
+
+  
 
 ];

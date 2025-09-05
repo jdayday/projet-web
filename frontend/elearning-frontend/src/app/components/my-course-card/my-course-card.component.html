@@ -13,8 +13,20 @@
     </div>
   </a>
 
-  <div class="card-actions">
-    <app-star-rating [rating]="course.rating"></app-star-rating>
-    <a [routerLink]="['/courses', course.id]" class="rate-link">Leave a rating</a>
-  </div>
+    <div class="my-course-card" *ngIf="enrollment && enrollment.course as course">
+      <div class="card-actions">
+        <app-star-rating [rating]="userRating"></app-star-rating>
+
+        <button class="rate-link-btn" (click)="isRatingModalOpen = true">
+          {{ userRating > 0 ? 'Edit your rating' : 'Leave a rating' }}
+        </button>
+      </div>
+    </div>
+
+    <app-rating-modal 
+      *ngIf="isRatingModalOpen"
+      [courseTitle]="enrollment.course.title"
+      (close)="isRatingModalOpen = false"
+      (ratingSubmit)="handleRatingSubmit($event)">
+    </app-rating-modal>
 </div>

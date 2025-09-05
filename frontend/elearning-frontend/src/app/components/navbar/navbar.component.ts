@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user.model';
 import { AvatarComponent } from '../avatar/avatar.component';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ import { AvatarComponent } from '../avatar/avatar.component';
 export class NavbarComponent {
   isExploreMenuOpen = false; 
   isProfileMenuOpen  = false;
+  itemCount$: Observable<number>;
   divisions = [
     'BASE_7', 'BASE_8', 'BASE_9', 'SECONDAIRE_1', 'SECONDAIRE_2', 'SECONDAIRE_3',
     'BAC_INFO', 'BAC_MATH', 'BAC_SCIENCE', 'BAC_SPORT', 'CONCOURS'
@@ -30,9 +32,11 @@ export class NavbarComponent {
     return this.authService.userRole$;
   }
   constructor(private authService: AuthService, private router: Router,
-   private courseService: CourseService 
+   private courseService: CourseService,
+   private cartService: CartService 
   ) {
         this.currentUser$ = this.authService.currentUser$;
+        this.itemCount$ = this.cartService.itemCount$;
 
   }
 

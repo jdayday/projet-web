@@ -41,7 +41,7 @@
 }
 
 .explore-menu-wrapper {
-  position: relative; /* Needed for the dropdown positioning */
+  position: relative; 
 }
 
 .explore-link {
@@ -218,4 +218,46 @@
       }
     }
   }
+}
+
+/*  CART ICON   */
+.cart-icon-wrapper {
+  position: relative; 
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 10%;
+  transition: background-color 0.2s ease-in-out;
+
+}
+
+.cart-icon-wrapper:hover {
+  background-color: #eee4ef; 
+}
+
+.cart-icon {
+  width: 20px; 
+  height: 20px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+
+  background-color: #bc14e6;
+  color: white;
+  
+  border-radius: 50%; 
+  width: 20px;
+  height: 20px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  font-size: 0.75rem;
+  font-weight: bold;
 }

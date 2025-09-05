@@ -12,6 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
+    transform: true,
   }));
   app.enableCors();
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));

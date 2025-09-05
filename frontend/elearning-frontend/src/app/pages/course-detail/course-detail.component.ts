@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { CommonModule } from '@angular/common';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -14,10 +15,15 @@ export class CourseDetailComponent implements OnInit {
   course: any; 
   isLoading = true;
   error: string | null = null;
+  isInCart = false; 
+  enrollment: any = null; 
+  
+  
 
   constructor(
     private route: ActivatedRoute,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +33,8 @@ export class CourseDetailComponent implements OnInit {
         next: (data) => {
           this.course = data;
           this.isLoading = false;
+          this.isInCart = this.cartService.isCourseInCart(this.course.id);
+
         },
         error: (err) => {
           this.error = 'Failed to load course details. Please try again later.';
@@ -34,10 +42,26 @@ export class CourseDetailComponent implements OnInit {
           console.error(err);
         }
       });
+
+            this.courseService.checkEnrollment(courseId).subscribe({
+        next: (response) => {
+          this.enrollment = response;
+        },
+        error: (err) => {
+          this.enrollment = null;
+          console.error('Failed to check enrollment status', err);
+        }
+      });
+
     } else {
       this.error = 'Invalid course ID.';
       this.isLoading = false;
     }
+
+      if (this.course) {
+      this.isInCart = this.cartService.isCourseInCart(this.course.id);
+    }
+
   }
 
 
@@ -48,4 +72,12 @@ export class CourseDetailComponent implements OnInit {
         });
     }
   }
+
+    addToCart(): void {
+    if (this.course) {
+      this.cartService.addToCart(this.course);
+      this.isInCart = true;
+    }
+  }
+
 }

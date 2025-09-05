@@ -186,7 +186,7 @@ model LessonCompletion {
 
 model Rating {
   id        Int      @id @default(autoincrement())
-  value     Int      // The star value, e.g., 1, 2, 3, 4, or 5
+  value     Int      
   createdAt DateTime @default(now())
 
   userId    Int
@@ -195,7 +195,7 @@ model Rating {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, courseId]) // A user can only rate a course once
+  @@unique([userId, courseId])
   @@map("ratings")
 }
 

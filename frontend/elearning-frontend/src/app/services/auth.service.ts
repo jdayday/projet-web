@@ -26,6 +26,12 @@ export class AuthService {
 
   constructor(private http: HttpClient, private profileService: ProfileService) {}
 
+  public getCurrentUserId(): number | null {
+    const user = this.userSubject.getValue();
+    return user ? user.id : null;
+  }
+
+
   private hasToken(): boolean {
     return !!localStorage.getItem('access_token');
   }

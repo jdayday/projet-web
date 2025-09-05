@@ -1,0 +1,26 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+
+<div class="rating-modal">
+  <div class="modal-header">
+    <h3>How would you rate this course?</h3>
+    <button class="close-btn" (click)="closeModal()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <p class="course-title">{{ courseTitle }}</p>
+    <div class="stars-wrapper" (mouseleave)="hoveredRating = 0">
+      <span *ngFor="let star of stars"
+            class="star"
+            [class.hovered]="star <= hoveredRating"
+            [class.selected]="star <= selectedRating"
+            (mouseenter)="hoveredRating = star"
+            (click)="selectedRating = star">
+        &#9733;
+      </span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="save-btn" (click)="submitRating()" [disabled]="selectedRating === 0">
+      Save and continue
+    </button>
+  </div>
+</div>

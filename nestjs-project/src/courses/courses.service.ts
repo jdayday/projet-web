@@ -66,8 +66,17 @@ export class CoursesService {
     return this.prisma.enrollment.findMany({
       where: { userId: userId },
       include: {
-         course: true,
-         },
+        course: {
+          include: {
+            author: true,
+            ratings: {
+              where: {
+                userId: userId,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
@@ -219,7 +228,7 @@ findTopRated(division?: Division) {
         userId_courseId: { userId, courseId },
       },
     });
-    return { isEnrolled: !!enrollment };
+    return enrollment;
   }
-
+  
 }

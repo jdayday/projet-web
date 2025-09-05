@@ -29,7 +29,7 @@ export class CourseViewerComponent implements OnInit {
     private courseService: CourseService,
     private sanitizer: DomSanitizer
   ) {
-        this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
+      this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
   }
 
   ngOnInit(): void {

@@ -66,6 +66,15 @@
       </a>
       
       <a routerLink="/my-courses" class="nav-link">My Courses</a>
+
+      <a routerLink="/cart" class="cart-icon-wrapper">
+        <img src="assets/icons/cart-icon.png" alt="Cart" class="cart-icon">
+        <span *ngIf="itemCount$ | async as count" class="cart-badge">
+          {{ count }}
+        </span>
+
+      </a>
+
      <div class="profile-menu-wrapper" 
        (mouseenter)="isProfileMenuOpen = true" 
        (mouseleave)="isProfileMenuOpen = false">
@@ -91,12 +100,12 @@
             </div>
           </div>
           <ul class="dropdown-links">
-            <li><a routerLink="/my-courses">My learning</a></li>
-            <li><a routerLink="/cart">My cart</a></li>
+            <li><a routerLink="/my-courses" (click)="isProfileMenuOpen=false">My learning</a></li>
+            <li><a routerLink="/cart" (click)="isProfileMenuOpen=false">My cart</a></li>
           </ul>
           <ul class="dropdown-links">
-            <li><a routerLink="/profile">Account settings</a></li>
-            <li><a routerLink="/profile/payment">Payment methods</a></li>
+            <li><a routerLink="/profile" (click)="isProfileMenuOpen=false">Account settings</a></li>
+            <li><a routerLink="/profile/payment" (click)="isProfileMenuOpen=false">Payment methods</a></li>
           </ul>
           <ul class="dropdown-links">
             <li><a routerLink="/help">Help and Support</a></li>

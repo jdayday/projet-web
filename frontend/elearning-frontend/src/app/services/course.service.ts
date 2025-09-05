@@ -60,7 +60,17 @@ export class CourseService {
   const token = this.authService.getAccessToken(); 
   const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
   return this.http.post<any>(`${this.apiUrl}/checkout/session/${courseId}`, {}, { headers });
+
   }
+
+    createCartCheckoutSession(courseIds: number[]): Observable<{ url: string }> {
+    const token = this.authService.getAccessToken(); 
+    const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    const body = { courseIds };
+    
+    return this.http.post<any>(`${this.apiUrl}/checkout/cart-session`, body, { headers });
+  }
+
 
   getCourseContent(courseId: number) {
   const token = this.authService.getAccessToken();

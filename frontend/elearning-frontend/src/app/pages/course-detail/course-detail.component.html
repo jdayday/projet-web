@@ -48,8 +48,26 @@
       <div class="sidebar">
         <div class="sidebar-inner">
           <img [src]="course.image" alt="Course Thumbnail" class="course-thumbnail">
-          <div class="price">${{ course.price }}</div>
-          <button class="enroll-button" (click)="enrollNow()">Buy Now</button>
+          <div *ngIf="!enrollment" class="price">${{ course.price }}</div>
+          <div *ngIf="enrollment" class="enrolled-badge"> You purchased this course on {{ enrollment.createdAt | date }}</div>
+          <div class="button-container">
+            <button *ngIf="enrollment" [routerLink]="['/learn', course.id]" class="Go-to-course-btn">
+              Go to Course
+             </button>
+
+              <ng-container *ngIf="!enrollment">
+               <button *ngIf="!isInCart" (click)="addToCart()" class="enroll-button">
+                Add to Cart
+              </button>
+              <button *ngIf="isInCart" routerLink="/cart" class="secondary-button">
+                Go to Cart
+              </button>
+
+              <button class="buy-now-button" (click)="enrollNow()">Buy Now</button>
+             </ng-container>
+          </div>
+
+
           <div class="course-includes">
             <h4>This course includes:</h4>
             <ul>

@@ -1,0 +1,21 @@
+<div class="cart-page">
+  <h1>Shopping Cart</h1>
+  <div class="cart-layout">
+    <div class="cart-items">
+      <div *ngFor="let item of cartItems$ | async" class="cart-item">
+        <img [src]="item.image" alt="{{ item.title }}" class="item-image">
+        <div class="item-details">
+          <a [routerLink]="['/courses', item.id]" class="item-title">{{ item.title }}</a>
+          <p class="item-author" *ngIf="item.author">By {{ item.author.firstName }} {{ item.author.lastName }}</p>
+        </div>
+        <button (click)="removeFromCart(item.id)" class="remove-btn">Remove</button>
+        <div class="item-price">{{ item.price | currency }}</div>
+      </div>
+    </div>
+    <div class="cart-summary">
+      <h3>Total:</h3>
+      <p class="total-price">{{ totalPrice | currency }}</p>
+      <button class="checkout-btn" (click)="checkout()">Checkout</button>
+    </div>
+  </div>
+</div>
