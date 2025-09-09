@@ -10,7 +10,6 @@ export class AdminService {
     const courseCount = await this.prisma.course.count();
     const enrollmentCount = await this.prisma.enrollment.count();
 
-    // Calculate total revenue
     const enrollments = await this.prisma.enrollment.findMany({
       include: {
         course: {

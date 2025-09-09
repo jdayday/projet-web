@@ -7,19 +7,32 @@
       <ul>
         <li *ngFor="let lesson of chapter.lessons" 
             (click)="selectLesson(lesson)" 
-            [class.selected]="lesson === selectedLesson">
-          <input type="checkbox" [checked]="lesson.completed" (click)="toggleLessonCompletion(lesson); $event.stopPropagation();">
-          {{ lesson.title }}
-        </li>
-        <li *ngFor="let lesson of chapter.lessons">
-          <span>{{ lesson.title }}</span>
-          
-          <button (click)="markAsComplete(lesson.id)">
-            Mark as Complete
-          </button>
+            [class.selected]="lesson === selectedLesson" class="lesson-item">
+        <label>
+          <input type="checkbox" [checked]="lesson.completed" 
+          (change)="toggleLessonCompletion(lesson); $event.stopPropagation();
+          markAsComplete(lesson.id);">
+          <span class="lesson-title">{{ lesson.title }}</span>
+        </label>
+
         </li>
       </ul>
     </div>
+      <div class="course-rating-actions">
+        <div class="rating-card">
+          <span class="rating-label">Your Rating</span>
+          <app-star-rating [rating]="userRating"></app-star-rating>
+          <button class="rate-btn" (click)="isRatingModalOpen = true">
+            {{ userRating > 0 ? 'Edit your rating' : 'Leave a rating' }}
+          </button>
+        </div>
+        <app-rating-modal 
+      *ngIf="isRatingModalOpen"
+      [courseTitle]="courseContent.title"
+      (close)="isRatingModalOpen = false"
+      (ratingSubmit)="handleRatingSubmit($event)">
+    </app-rating-modal>
+      </div>
   </div>
 
   <div class="main-content">
@@ -45,14 +58,8 @@
         <button (click)="previousLesson()" [disabled]="isFirstLesson()">Previous</button>
         <button (click)="nextLesson()" [disabled]="isLastLesson()">Next</button>
       </div>
-     <!-- <app-rate-course 
-          *ngIf="isEnrolled"
-          [courseId]="courseId" 
-          (ratingSubmitted)="onRatingSubmitted($event)">
-        </app-rate-course>
-      </div> -->
+      </div>
 
-    </div>
     <ng-template #noLessonSelected>
       <div class="welcome-message">
         <h2>Welcome!</h2>

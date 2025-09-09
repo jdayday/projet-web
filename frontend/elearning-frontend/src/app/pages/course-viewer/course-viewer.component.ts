@@ -3,13 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { RateCourseComponent } from '../../components/rate-course/rate-course.component';
 import { Course } from '../../models/course.model';
+import { RatingsService } from '../../services/ratings.service';
+import { StarRatingComponent } from '../../components/star-rating/star-rating.component';
+import { RatingModalComponent } from '../../components/rating-modal/rating-modal.component';
+  
 
 @Component({
   selector: 'app-course-viewer',
   standalone: true,
-  imports: [CommonModule,RateCourseComponent],
+  imports: [CommonModule, StarRatingComponent, RatingModalComponent],
   templateUrl: './course-viewer.component.html',
   styleUrls: ['./course-viewer.component.scss']
 })
@@ -23,11 +26,17 @@ export class CourseViewerComponent implements OnInit {
   courseId: number | null = null;
   isLoading = true;
   isEnrolled = false;
+  
+  isRatingModalOpen = false;
+  userRating = 0;
+
 
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private ratingsService: RatingsService
+
   ) {
         this.courseId = Number(this.route.snapshot.paramMap.get('courseId'));
   }
@@ -38,6 +47,15 @@ export class CourseViewerComponent implements OnInit {
       this.courseService.getCourseContent(this.courseId).subscribe({
         next: (data) => {
           this.courseContent = data;
+          const numericId = Number(this.courseId);
+          this.userRating = this.ratingsService.getUserRating(numericId);
+          this.ratingsService.ratingsState$.subscribe((ratings) => {
+          if (ratings[numericId] !== undefined) {
+            this.userRating = ratings[numericId];
+          }
+        });
+
+
           this.initializeLessons();
           if (this.lessons.length > 0) {
             this.selectLesson(this.lessons[0]);
@@ -63,6 +81,16 @@ export class CourseViewerComponent implements OnInit {
     }
   }
 
+    private setUserRating(): void {
+    const ratings = this.courseContent?.ratings;
+    if (ratings && ratings.length > 0) {
+      this.userRating = ratings[0].value;
+    } else {
+      this.userRating = 0;
+    }
+  }
+
+  
   private initializeLessons(): void {
     this.lessons = [];
     if (this.courseContent && this.courseContent.chapters) {
@@ -123,11 +151,23 @@ export class CourseViewerComponent implements OnInit {
 
  }
 
-   onRatingSubmitted(updatedCourse: Course): void {
-    if (this.courseContent) {
-      this.courseContent.rating = updatedCourse.rating;
-      this.courseContent.ratingCount = updatedCourse.ratingCount;
+  handleRatingSubmit(ratingValue: number): void {
+    const courseId = Number(this.courseId);
+    if (!courseId) {
+      console.error('Invalid course ID');
+      return;
     }
+
+    this.ratingsService.submitRating(courseId, ratingValue).subscribe({
+      next: (updatedCourse) => {
+        this.userRating = ratingValue;
+        this.courseContent.rating = updatedCourse.rating;
+        this.courseContent.ratingCount = updatedCourse.ratingCount;
+        this.isRatingModalOpen = false;
+      },
+      error: (err) => console.error('Rating submission failed', err)
+    });
   }
+
 
 }

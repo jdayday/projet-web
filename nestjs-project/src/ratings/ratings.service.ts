@@ -38,4 +38,14 @@ export class RatingsService {
       },
     });
   }
+
+  async getUserRatings(userId: number) {
+    const ratings = await this.prisma.rating.findMany({
+      where: { userId },
+      select: { courseId: true, value: true },
+    });
+
+    return ratings; 
+  }
+
 }

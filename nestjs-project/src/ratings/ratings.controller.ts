@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { GetCurrentUserId } from '../common/decorators';
 import { AtGuard } from '../common/guards';
 import { CreateRatingDto } from './dto/create-rating.dto';
@@ -16,4 +16,10 @@ export class RatingsController {
   ) {
     return this.ratingsService.submitRating(userId, dto);
   }
+
+  @Get('my-ratings')
+  getMyRatings(@GetCurrentUserId() userId: number) {
+    return this.ratingsService.getUserRatings(userId);
+  }
+
 }

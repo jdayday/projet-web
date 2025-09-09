@@ -24,7 +24,7 @@ export class CheckoutService {
       throw new NotFoundException('One or more courses in your cart could not be found.');
     }
     
-    const baseUrl = 'https://de90813f86e1.ngrok-free.app'; 
+    const baseUrl = 'https://9b71f471940b.ngrok-free.app'; 
 
     const line_items = courses.map(course => {
       let imagePath: string | undefined;

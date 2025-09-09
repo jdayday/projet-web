@@ -1,8 +1,8 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
-import { RatingModalComponent } from '../rating-modal/rating-modal.component'; // 1. Import the modal
+import { RatingModalComponent } from '../rating-modal/rating-modal.component'; 
 import { RatingsService } from '../../services/ratings.service'; // 2. Import the rating service
 
 @Component({
@@ -12,7 +12,7 @@ import { RatingsService } from '../../services/ratings.service'; // 2. Import th
   templateUrl: './my-course-card.component.html',
   styleUrls: ['./my-course-card.component.scss']
 })
-export class MyCourseCardComponent {
+export class MyCourseCardComponent implements OnInit {
   @Input() enrollment: any;
   
   isRatingModalOpen = false;
@@ -25,6 +25,20 @@ export class MyCourseCardComponent {
       this.setUserRating();
     }
   }
+
+  ngOnInit(): void {
+  const courseId = this.enrollment?.course?.id;
+  if (courseId) {
+    this.userRating = this.ratingsService.getUserRating(courseId);
+
+    this.ratingsService.ratingsState$.subscribe((ratings) => {
+      if (ratings[courseId] !== undefined) {
+        this.userRating = ratings[courseId];
+      }
+    });
+  }
+}
+
 
     private setUserRating(): void {
     const ratings = this.enrollment.course?.ratings;
